@@ -1,0 +1,29 @@
+# Mi elección de empresa
+
+## Empresa elegida
+BRASALAND
+
+## Por qué la elegí
+Elegí la empresa BRASALAND porque yo tengo experiencia en empresas de hospitalidad y creo que puede ser muy interesante juntar y aplicar mis conocimientos a una operadora de restaurantes y aprovechar el desarrollo de las aplicaciones en la operacion y finanzas, principalmente enfocado en mejorar el servicio al cliente.
+
+## Departamentos más interesantes
+Operaciones: Por que la operación abarca el modelo de atención al cliente, los procesos: abastecimiento e inventarios; producción de alimentos; reclutamiento, selección, contratación y capacitación de empleados, modelo de atención al cliente; auditoria; certificaciones.
+Finanzas: Por que las finanzas son el habilitador de la operación: Cierre del día; POS; Nómina; Compras; Cuentas por pagar y por cobrar; inventarios, Auditoria de control interno; flujo de efectivo; ciclo de ingresos y egresos; cierre contable mensual, trimestral, semestral y anual; analisis de estados financieros.
+
+## Reto de IA que mas ganas tengo de construir
+El reto que más me interesa construir es el de tener información en tiempo real que permita tomar decisiones rapidamente para afrontar los retos de la cadena de restaurantes.
+
+## Mi idea de agente de IA
+La función principal del agente de IA es actuar como un **Orquestador Estratégico en Tiempo Real**. Su objetivo es recolectar, procesar y unificar los datos generados por todos los procesos de BRASALAND para construir un Balanced Scorecard (BSC) dinámico que ofrezca una visión 360° del negocio. Este agente elimina los silos de información, automatizando el flujo de datos desde el punto de venta (POS) y los sistemas de inventario directamente hacia un panel de control, permitiendo a la dirección tomar decisiones inmediatas frente a los retos diarios del negocio de BRASALAND.
+
+### Ejes de Acción del Agente (El Enfoque 360)
+Para lograr esta vista integral, el agente opera sobre dos pilares fundamentales:
+
+* **Monitorización de Operaciones (El "Pulso" del Restaurante):** El agente rastrea de forma continua los procesos clave, desde el modelo de atención al cliente hasta la producción de alimentos y el abastecimiento. Si en alguna sucursal se detecta una caída en los niveles de inventario crítico o un cuello de botella en el reclutamiento y capacitación de empleados, el agente emite alertas automatizadas basadas en metodologías de eficiencia y mejora continua (como estructuras DMAIC) para corregir la desviación antes de que afecte el servicio.
+* **Habilitador Financiero (ETL y P&L en Tiempo Real):** Entendiendo que las finanzas son el motor de la operación, el agente actúa como un pipeline de datos (utilizando plataformas de automatización) que extrae la información del cierre del día, el POS, la nómina y las compras. Estos datos alimentan un dashboard en tiempo real, donde se consolida el ciclo de ingresos y egresos, cuentas por cobrar y el flujo de efectivo. Al programar las fórmulas, el agente estructura la sintaxis de manera directa, evitando múltiples niveles de agregación y el uso de operadores no compatibles para garantizar despliegues sin errores.
+
+### Valor Estratégico (El Reto a Resolver)
+
+* **Toma de Decisiones Ágil:** Transforma la información que se genera diariamente en KPIs que permiten dar seguimiento y tomar deciciones, complementando el análisis de estados financieros y cierres contables—que tradicionalmente son mensuales, trimestrales o anuales—en una herramienta de visibilidad en tiempo real.
+* **Auditoría y Control Interno:** Al rastrear cada transacción y movimiento de almacén y el POS, el agente facilita la auditoría de control interno de forma continua y apoya en el cumplimiento normativo.
+* **Ejecución Directiva:** Funciona como el copiloto perfecto para la dirección, siendo una herramienta para monitorear el desempeño del negocio y el monitore de control de la cadena de restaurantes.
