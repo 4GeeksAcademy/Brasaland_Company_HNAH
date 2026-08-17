@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Brasaland - Cadena de restaurantes de comida a la brasa en Colombia y Estados Unidos. 14 ubicaciones, calidad consistente y servicio cálido desde 2008.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Brasaland Digital">
+    <meta name="geo.region" content="CO-ANT,US-FL">
+    <meta name="geo.placename" content="Medellín, Miami">
+    <meta property="og:title" content="Brasaland | El sabor de la brasa, en cada bocado">
+    <meta property="og:description" content="Cadena de restaurantes de comida a la brasa en Colombia y Estados Unidos. 14 ubicaciones, calidad consistente y servicio cálido desde 2008.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://brasaland.com">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Brasaland | El sabor de la brasa, en cada bocado">
+    <meta name="twitter:description" content="Cadena de restaurantes de comida a la brasa en Colombia y Estados Unidos. 14 ubicaciones, calidad consistente y servicio cálido desde 2008.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80">
+    <title>Brasaland | El sabor de la brasa, en cada bocado</title>
+    <link rel="canonical" href="https://brasaland.com/">
+    <link rel="alternate" hreflang="es" href="https://brasaland.com/">
+    <link rel="alternate" hreflang="en" href="https://brasaland.com/?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://brasaland.com/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brasa: {
+                50: "#fff7ed",
+                100: "#ffedd5",
+                500: "#f97316",
+                600: "#ea580c",
+                700: "#c2410c",
+                800: "#9a3412"
+              }
+            },
+            fontFamily: {
+              sans: ["Barlow", "sans-serif"],
+              display: ["Merriweather", "serif"]
+            }
+          }
+        }
+      };
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Brasaland",
+        "description": "Cadena de restaurantes de comida a la brasa en Colombia y Estados Unidos",
+        "url": "https://brasaland.com",
+        "foundingDate": "2008",
+        "servesCuisine": "Grilled food, Colombian cuisine",
+        "priceRange": "$$",
+        "address": [
+          {
+            "@type": "PostalAddress",
+            "addressCountry": "CO",
+            "addressLocality": "Medellín",
+            "addressRegion": "Antioquia"
+          },
+          {
+            "@type": "PostalAddress",
+            "addressCountry": "US",
+            "addressLocality": "Miami",
+            "addressRegion": "FL"
+          }
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+57-4-123-4567",
+          "contactType": "customer service",
+          "availableLanguage": ["Spanish", "English"]
+        },
+        "sameAs": [
+          "https://instagram.com/brasaland",
+          "https://facebook.com/brasaland"
+        ]
+      }
+    </script>
+  </head>
+  <body class="min-h-screen overflow-x-hidden bg-stone-950 text-stone-100 antialiased">
+    <a href="#contenido-principal" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-stone-900">Saltar al contenido principal</a>
+
+    <header class="sticky top-0 z-50 border-b border-brasa-700/40 bg-stone-950/95 backdrop-blur">
+      <section class="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-4 md:px-8" aria-label="Encabezado principal">
+        <p class="font-display text-2xl tracking-wide text-brasa-100">Brasaland</p>
+
+        <button id="menu-toggle" type="button" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-brasa-500/70 px-3 text-brasa-100 transition hover:bg-brasa-600/20 focus:outline-none focus:ring-2 focus:ring-brasa-500 md:hidden" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú principal">
+          <span aria-hidden="true" class="text-xl">☰</span>
+        </button>
+
+        <nav id="menu-principal" class="absolute left-0 top-full hidden w-full border-b border-brasa-800 bg-stone-950 md:static md:block md:w-auto md:border-none" aria-label="Navegación principal">
+          <ul class="flex flex-col gap-1 p-4 md:flex-row md:items-center md:gap-2 md:p-0">
+            <li><a data-i18n="navInicio" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#inicio">Inicio</a></li>
+            <li><a data-i18n="navUbicaciones" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#ubicaciones">Ubicaciones</a></li>
+            <li><a data-i18n="navMenu" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#menu">Menú</a></li>
+            <li><a data-i18n="navBrasaPoints" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#brasa-points">Brasa Points</a></li>
+            <li><a data-i18n="navContacto" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#contacto">Contacto</a></li>
+            <li class="pt-2 md:hidden">
+              <fieldset class="inline-flex items-center gap-1 rounded-full border border-brasa-700/60 p-1" aria-label="Selector de idioma móvil">
+                <legend class="sr-only">Idioma</legend>
+                <button type="button" data-lang="es" class="lang-button rounded-full bg-brasa-600 px-3 py-1 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Cambiar idioma a español">ES</button>
+                <button type="button" data-lang="en" class="lang-button rounded-full px-3 py-1 text-sm font-semibold text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Switch language to English">EN</button>
+              </fieldset>
+            </li>
+          </ul>
+        </nav>
+
+        <fieldset class="hidden items-center gap-1 rounded-full border border-brasa-700/60 p-1 md:flex" aria-label="Selector de idioma">
+          <legend class="sr-only">Idioma</legend>
+          <button type="button" data-lang="es" class="lang-button rounded-full bg-brasa-600 px-3 py-1 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Cambiar idioma a español">ES</button>
+          <button type="button" data-lang="en" class="lang-button rounded-full px-3 py-1 text-sm font-semibold text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Switch language to English">EN</button>
+        </fieldset>
+      </section>
+    </header>
+
+    <main id="contenido-principal">
+      <section id="inicio" class="relative isolate overflow-hidden border-b border-brasa-700/30">
+        <figure class="absolute inset-0 -z-20" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=1600&q=80" alt="Parrilla encendida con cortes de carne a la brasa" class="h-full w-full object-cover" width="1600" height="900">
+        </figure>
+        <section class="absolute inset-0 -z-10 bg-gradient-to-r from-stone-950 via-stone-950/85 to-brasa-900/70" aria-hidden="true"></section>
+
+        <section class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-16 md:px-8 md:py-24 lg:grid-cols-2 lg:items-center">
+          <article>
+            <p class="mb-3 inline-flex rounded-full border border-brasa-400/60 bg-brasa-600/20 px-3 py-1 text-sm font-semibold text-brasa-100" data-i18n="heroBadge">Desde Medellín para Colombia y USA</p>
+            <h1 data-i18n="heroTitle" class="font-display text-4xl leading-tight text-white md:text-5xl">El sabor de la brasa, en cada bocado</h1>
+            <p data-i18n="heroSubtitle" class="mt-5 max-w-2xl text-lg leading-relaxed text-stone-200">Desde 2008 sirviendo las mejores carnes a la brasa en Colombia y Estados Unidos. 14 ubicaciones, una misma pasión por la calidad y el sabor.</p>
+            <a data-i18n="heroCta" href="./application.html#registro" class="mt-8 inline-flex min-h-11 items-center justify-center rounded-md bg-brasa-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-brasa-900/50 transition hover:bg-brasa-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Únete a Brasa Points</a>
+          </article>
+
+          <article id="menu" class="rounded-2xl border border-brasa-500/40 bg-stone-900/80 p-6 shadow-xl shadow-stone-950/60 backdrop-blur">
+            <h2 data-i18n="menuTitle" class="text-2xl font-semibold text-brasa-100">Menú con sabor auténtico</h2>
+            <p data-i18n="menuDescription" class="mt-3 text-base leading-relaxed text-stone-200">Parrilladas, cortes premium, acompañamientos clásicos y opciones para compartir: preparados con técnicas tradicionales para un sabor inolvidable.</p>
+            <a data-i18n="menuSecondaryCta" href="./application.html" class="mt-5 inline-flex min-h-11 items-center justify-center rounded-md border border-brasa-500 px-5 py-2 text-base font-semibold text-brasa-100 transition hover:bg-brasa-700/30 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Descubre beneficios Brasa Points</a>
+          </article>
+        </section>
+      </section>
+
+      <section id="historia" class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-14 md:px-8 lg:grid-cols-2 lg:items-center">
+        <article>
+          <h2 data-i18n="historiaTitle" class="text-3xl font-semibold text-brasa-100">Nuestra Historia</h2>
+          <p class="mt-5 max-w-prose text-lg leading-relaxed text-stone-200">Fundada en Medellín en 2008, Brasaland comenzó como un sueño familiar: compartir el auténtico sabor de la carne a la brasa con calidad constante y servicio cálido. Hoy somos 14 restaurantes en dos países, pero mantenemos la misma receta de éxito: productos frescos, técnicas tradicionales, y pasión por cada plato que servimos.</p>
+        </article>
+        <figure class="overflow-hidden rounded-2xl border border-brasa-700/40 shadow-lg shadow-stone-950/60">
+          <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80" alt="Familia disfrutando una comida a la brasa en un restaurante cálido" class="h-80 w-full object-cover md:h-96" width="1200" height="900">
+          <figcaption data-i18n="historiaCaption" class="bg-stone-900/95 px-4 py-3 text-base text-stone-200">Una tradición familiar que creció sin perder su esencia.</figcaption>
+        </figure>
+      </section>
+
+      <section id="caracteristicas" class="mx-auto w-full max-w-7xl px-4 py-14 md:px-8">
+        <h2 data-i18n="featuresTitle" class="text-3xl font-semibold text-brasa-100">Lo que nos hace únicos</h2>
+        <section class="mt-8 grid gap-5 lg:grid-cols-3" aria-label="Pilares de Brasaland">
+          <article class="rounded-2xl border border-brasa-700/40 bg-stone-900/80 p-6 shadow-md shadow-stone-950/50">
+            <h3 data-i18n="feature1Title" class="text-2xl font-semibold text-brasa-100">Calidad Consistente</h3>
+            <ul class="mt-4 space-y-2 text-base leading-relaxed text-stone-200">
+              <li data-i18n="feature1Item1">Mismas recetas y estándares en todos los locales</li>
+              <li data-i18n="feature1Item2">Ingredientes frescos seleccionados diariamente</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-brasa-700/40 bg-stone-900/80 p-6 shadow-md shadow-stone-950/50">
+            <h3 data-i18n="feature2Title" class="text-2xl font-semibold text-brasa-100">Experiencia Cálida</h3>
+            <ul class="mt-4 space-y-2 text-base leading-relaxed text-stone-200">
+              <li data-i18n="feature2Item1">Servicio amable y atento</li>
+              <li data-i18n="feature2Item2">Ambiente familiar en cada visita</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-brasa-700/40 bg-stone-900/80 p-6 shadow-md shadow-stone-950/50">
+            <h3 data-i18n="feature3Title" class="text-2xl font-semibold text-brasa-100">Rapidez</h3>
+            <ul class="mt-4 space-y-2 text-base leading-relaxed text-stone-200">
+              <li data-i18n="feature3Item1">Tu comida lista en minutos</li>
+              <li data-i18n="feature3Item2">Sin sacrificar sabor ni calidad</li>
+            </ul>
+          </article>
+        </section>
+      </section>
+
+      <section id="ubicaciones" class="mx-auto w-full max-w-7xl px-4 py-14 md:px-8">
+        <h2 data-i18n="locationsTitle" class="text-3xl font-semibold text-brasa-100">Nuestras Ubicaciones</h2>
+        <section class="mt-8 grid gap-5 lg:grid-cols-2">
+          <article class="rounded-2xl border border-brasa-700/40 bg-stone-900 p-6 shadow-md shadow-stone-950/50">
+            <h3 data-i18n="colombiaTitle" class="text-2xl font-semibold text-brasa-100">Colombia</h3>
+            <p data-i18n="colombiaLocations" class="mt-3 text-base leading-relaxed text-stone-200">10 restaurantes en Medellín, Bogotá y Cali</p>
+            <p data-i18n="colombiaHours" class="mt-2 text-base text-stone-300">Horario: Lun-Dom 11:00 - 22:00</p>
+          </article>
+          <article class="rounded-2xl border border-brasa-700/40 bg-stone-900 p-6 shadow-md shadow-stone-950/50">
+            <h3 data-i18n="usaTitle" class="text-2xl font-semibold text-brasa-100">Estados Unidos (Florida)</h3>
+            <p data-i18n="usaLocations" class="mt-3 text-base leading-relaxed text-stone-200">4 restaurantes en Miami y Orlando</p>
+            <p data-i18n="usaHours" class="mt-2 text-base text-stone-300">Horario: Mon-Sun 11:00 AM - 10:00 PM</p>
+          </article>
+        </section>
+      </section>
+
+      <section id="brasa-points" class="mx-auto w-full max-w-7xl px-4 py-14 md:px-8">
+        <article class="rounded-3xl border border-brasa-500 bg-gradient-to-br from-brasa-800 to-brasa-600 p-7 shadow-2xl shadow-brasa-950/40 md:p-10">
+          <h2 data-i18n="pointsTitle" class="text-3xl font-semibold text-white">Brasa Points</h2>
+          <ul class="mt-5 space-y-3 text-base leading-relaxed text-orange-50">
+            <li data-i18n="points1">Gana puntos con cada visita</li>
+            <li data-i18n="points2">Acumula 1 punto por cada $10.000 COP o $5 USD</li>
+            <li data-i18n="points3">Canjea tus puntos por descuentos y platos gratis</li>
+            <li data-i18n="points4">Ofertas exclusivas para miembros</li>
+            <li data-i18n="points5">Registro 100% digital - ¡ya no más tarjetas de papel!</li>
+          </ul>
+          <a data-i18n="pointsCta" href="./application.html" class="mt-7 inline-flex min-h-11 items-center justify-center rounded-md bg-stone-950 px-6 py-3 text-base font-semibold text-brasa-100 transition hover:bg-stone-800 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white">Regístrate ahora</a>
+        </article>
+      </section>
+
+      <section id="mensaje-pedidos" class="mx-auto w-full max-w-7xl px-4 py-14 md:px-8">
+        <article class="rounded-2xl border border-amber-300/40 bg-amber-100 p-6 text-stone-900 shadow-md shadow-amber-900/20">
+          <h2 data-i18n="ordersTitle" class="text-2xl font-semibold text-amber-950">Pedidos</h2>
+          <p class="mt-3 text-lg leading-relaxed">¿Quieres hacer un pedido? Llama a tu ubicación favorita o visítanos directamente. ¡Pronto tendremos pedidos en línea!</p>
+        </article>
+      </section>
+
+      <section id="contacto" class="mx-auto w-full max-w-7xl px-4 py-14 md:px-8">
+        <h2 data-i18n="contactTitle" class="text-3xl font-semibold text-brasa-100">Contacto</h2>
+        <address class="mt-6 grid gap-4 not-italic lg:grid-cols-3">
+          <p class="rounded-xl border border-brasa-700/30 bg-stone-900 p-4 text-base leading-relaxed text-stone-200">
+            <strong class="text-brasa-100">Email:</strong>
+            <a href="mailto:hola@brasaland.com" class="ml-1 text-brasa-100 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-brasa-500">hola@brasaland.com</a>
+          </p>
+          <p class="rounded-xl border border-brasa-700/30 bg-stone-900 p-4 text-base leading-relaxed text-stone-200">
+            <strong class="text-brasa-100">Colombia:</strong>
+            <a href="tel:+5741234567" class="ml-1 text-brasa-100 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-brasa-500">+57 4 123 4567</a>
+          </p>
+          <p class="rounded-xl border border-brasa-700/30 bg-stone-900 p-4 text-base leading-relaxed text-stone-200">
+            <strong class="text-brasa-100">Florida:</strong>
+            <a href="tel:+13051234567" class="ml-1 text-brasa-100 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-brasa-500">+1 305 123 4567</a>
+          </p>
+        </address>
+      </section>
+    </main>
+
+    <footer class="border-t border-brasa-700/40 bg-stone-950">
+      <section class="mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-4 px-4 py-8 md:flex-row md:items-center md:px-8">
+        <p class="text-base text-stone-300">© 2025 Brasaland. Todos los derechos reservados.</p>
+        <nav aria-label="Redes sociales">
+          <ul class="flex items-center gap-4">
+            <li>
+              <a href="https://instagram.com/brasaland" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center rounded-md border border-brasa-600 px-4 py-2 text-base font-medium text-brasa-100 transition hover:bg-brasa-700/20 focus:outline-none focus:ring-2 focus:ring-brasa-500" aria-label="Visitar Instagram de Brasaland">Instagram</a>
+            </li>
+            <li>
+              <a href="https://facebook.com/brasaland" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center rounded-md border border-brasa-600 px-4 py-2 text-base font-medium text-brasa-100 transition hover:bg-brasa-700/20 focus:outline-none focus:ring-2 focus:ring-brasa-500" aria-label="Visitar Facebook de Brasaland">Facebook</a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </footer>
+
+    <script>
+      const menuToggleButton = document.getElementById("menu-toggle");
+      const mainMenu = document.getElementById("menu-principal");
+      const languageButtons = document.querySelectorAll(".lang-button");
+      const i18nNodes = document.querySelectorAll("[data-i18n]");
+      const navLinks = document.querySelectorAll(".nav-link");
+
+      const translations = {
+        es: {
+          navInicio: "Inicio",
+          navUbicaciones: "Ubicaciones",
+          navMenu: "Menú",
+          navBrasaPoints: "Brasa Points",
+          navContacto: "Contacto",
+          heroBadge: "Desde Medellín para Colombia y USA",
+          heroTitle: "El sabor de la brasa, en cada bocado",
+          heroSubtitle: "Desde 2008 sirviendo las mejores carnes a la brasa en Colombia y Estados Unidos. 14 ubicaciones, una misma pasión por la calidad y el sabor.",
+          heroCta: "Únete a Brasa Points",
+          menuTitle: "Menú con sabor auténtico",
+          menuDescription: "Parrilladas, cortes premium, acompañamientos clásicos y opciones para compartir: preparados con técnicas tradicionales para un sabor inolvidable.",
+          menuSecondaryCta: "Descubre beneficios Brasa Points",
+          historiaTitle: "Nuestra Historia",
+          historiaCaption: "Una tradición familiar que creció sin perder su esencia.",
+          featuresTitle: "Lo que nos hace únicos",
+          feature1Title: "Calidad Consistente",
+          feature1Item1: "Mismas recetas y estándares en todos los locales",
+          feature1Item2: "Ingredientes frescos seleccionados diariamente",
+          feature2Title: "Experiencia Cálida",
+          feature2Item1: "Servicio amable y atento",
+          feature2Item2: "Ambiente familiar en cada visita",
+          feature3Title: "Rapidez",
+          feature3Item1: "Tu comida lista en minutos",
+          feature3Item2: "Sin sacrificar sabor ni calidad",
+          locationsTitle: "Nuestras Ubicaciones",
+          colombiaTitle: "Colombia",
+          colombiaLocations: "10 restaurantes en Medellín, Bogotá y Cali",
+          colombiaHours: "Horario: Lun-Dom 11:00 - 22:00",
+          usaTitle: "Estados Unidos (Florida)",
+          usaLocations: "4 restaurantes en Miami y Orlando",
+          usaHours: "Horario: Mon-Sun 11:00 AM - 10:00 PM",
+          pointsTitle: "Brasa Points",
+          points1: "Gana puntos con cada visita",
+          points2: "Acumula 1 punto por cada $10.000 COP o $5 USD",
+          points3: "Canjea tus puntos por descuentos y platos gratis",
+          points4: "Ofertas exclusivas para miembros",
+          points5: "Registro 100% digital - ¡ya no más tarjetas de papel!",
+          pointsCta: "Regístrate ahora",
+          ordersTitle: "Pedidos",
+          contactTitle: "Contacto"
+        },
+        en: {
+          navInicio: "Home",
+          navUbicaciones: "Locations",
+          navMenu: "Menu",
+          navBrasaPoints: "Brasa Points",
+          navContacto: "Contact",
+          heroBadge: "From Medellin to Colombia and the USA",
+          heroTitle: "The flavor of the grill, in every bite",
+          heroSubtitle: "Since 2008, serving the best grilled meats in Colombia and the United States. 14 locations, one shared passion for quality and flavor.",
+          heroCta: "Join Brasa Points",
+          menuTitle: "Authentic grilled menu",
+          menuDescription: "Signature grill platters, premium cuts, classic sides, and sharing options prepared with traditional techniques for unforgettable flavor.",
+          menuSecondaryCta: "Discover Brasa Points benefits",
+          historiaTitle: "Our Story",
+          historiaCaption: "A family tradition that grew without losing its essence.",
+          featuresTitle: "What makes us unique",
+          feature1Title: "Consistent Quality",
+          feature1Item1: "Same recipes and standards at every location",
+          feature1Item2: "Fresh ingredients selected daily",
+          feature2Title: "Warm Experience",
+          feature2Item1: "Friendly and attentive service",
+          feature2Item2: "Family atmosphere in every visit",
+          feature3Title: "Speed",
+          feature3Item1: "Your meal ready in minutes",
+          feature3Item2: "Without sacrificing flavor or quality",
+          locationsTitle: "Our Locations",
+          colombiaTitle: "Colombia",
+          colombiaLocations: "10 restaurants in Medellin, Bogota, and Cali",
+          colombiaHours: "Hours: Mon-Sun 11:00 - 22:00",
+          usaTitle: "United States (Florida)",
+          usaLocations: "4 restaurants in Miami and Orlando",
+          usaHours: "Hours: Mon-Sun 11:00 AM - 10:00 PM",
+          pointsTitle: "Brasa Points",
+          points1: "Earn points with every visit",
+          points2: "Get 1 point for every COP 10,000 or USD 5",
+          points3: "Redeem points for discounts and free dishes",
+          points4: "Exclusive offers for members",
+          points5: "100% digital signup - no more paper cards!",
+          pointsCta: "Sign up now",
+          ordersTitle: "Orders",
+          contactTitle: "Contact"
+        }
+      };
+
+      const setLanguage = (language) => {
+        if (!translations[language]) {
+          return;
+        }
+
+        i18nNodes.forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          const translatedText = translations[language][key];
+          if (translatedText) {
+            node.textContent = translatedText;
+          }
+        });
+
+        document.documentElement.lang = language === "en" ? "en" : "es";
+
+        languageButtons.forEach((button) => {
+          const isActive = button.getAttribute("data-lang") === language;
+          button.classList.toggle("bg-brasa-600", isActive);
+          button.classList.toggle("text-white", isActive);
+          button.classList.toggle("text-brasa-100", !isActive);
+        });
+      };
+
+      if (menuToggleButton && mainMenu) {
+        const closeMenu = () => {
+          menuToggleButton.setAttribute("aria-expanded", "false");
+          mainMenu.classList.add("hidden");
+        };
+
+        menuToggleButton.addEventListener("click", () => {
+          const isExpanded = menuToggleButton.getAttribute("aria-expanded") === "true";
+          menuToggleButton.setAttribute("aria-expanded", String(!isExpanded));
+          mainMenu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeMenu();
+          }
+        });
+
+        document.addEventListener("click", (event) => {
+          const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+          if (isDesktop) {
+            return;
+          }
+
+          const clickTarget = event.target;
+          const clickedInsideMenu = mainMenu.contains(clickTarget);
+          const clickedToggle = menuToggleButton.contains(clickTarget);
+          if (!clickedInsideMenu && !clickedToggle) {
+            closeMenu();
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+            if (!isDesktop) {
+              closeMenu();
+            }
+          });
+        });
+      }
+
+      languageButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setLanguage(button.getAttribute("data-lang"));
+        });
+      });
+
+      const observedSections = document.querySelectorAll("main section[id]");
+      if ("IntersectionObserver" in window && observedSections.length > 0) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const sectionId = entry.target.getAttribute("id");
+                navLinks.forEach((link) => {
+                  const isActive = link.getAttribute("href") === `#${sectionId}`;
+                  link.classList.toggle("bg-brasa-700/30", isActive);
+                  link.classList.toggle("text-brasa-100", isActive);
+                  if (isActive) {
+                    link.setAttribute("aria-current", "page");
+                  } else {
+                    link.removeAttribute("aria-current");
+                  }
+                });
+              }
+            });
+          },
+          {
+            rootMargin: "-45% 0px -45% 0px",
+            threshold: 0.1
+          }
+        );
+
+        observedSections.forEach((section) => observer.observe(section));
+      }
+
+      setLanguage("es");
+    </script>
+  </body>
+</html>

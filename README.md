@@ -9,6 +9,24 @@ _Estas instrucciones tambien estan disponibles en [espanol](./README.es.md)._
 
 ---
 
+## Brasaland Public Website (Root)
+
+This repository now includes a public website implementation in the project root:
+
+- `index.html` (landing page)
+- `application.html` (Brasa Points registration form)
+- `validation.js` (form validations and dependent field logic)
+
+### Run locally in Codespaces
+
+```bash
+npx http-server . -p 3000 -a 0.0.0.0
+```
+
+Then open the forwarded port (`3000`) and set it to **Public** if you need an external URL for audits.
+
+---
+
 ## Purpose
 
 This repository is the **starter template** for transversal projects. You will work on real company scenarios (Brasaland, TrackFlow, Nexova), building deliverables that map to course milestones (Web, Programming, Backend, Telemetry, RAG, Agents, Workflows, Real-time).
