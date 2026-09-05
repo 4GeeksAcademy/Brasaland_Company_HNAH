@@ -24,32 +24,7 @@
     <link rel="alternate" hreflang="es" href="https://brasaland.com/application.html">
     <link rel="alternate" hreflang="en" href="https://brasaland.com/application.html?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://brasaland.com/application.html">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brasa: {
-                50: "#fff7ed",
-                100: "#ffedd5",
-                500: "#f97316",
-                600: "#ea580c",
-                700: "#c2410c",
-                800: "#9a3412"
-              }
-            },
-            fontFamily: {
-              sans: ["Barlow", "sans-serif"],
-              display: ["Merriweather", "serif"]
-            }
-          }
-        }
-      };
-    </script>
+    <link rel="stylesheet" href="./dist/styles.css">
   </head>
   <body class="flex min-h-screen flex-col overflow-x-hidden bg-stone-950 text-stone-100 antialiased">
     <a href="#registro" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-stone-900">Saltar al formulario</a>
@@ -169,7 +144,7 @@
         </fieldset>
 
         <section class="flex flex-col gap-3 sm:flex-row">
-          <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-md bg-brasa-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-brasa-900/40 transition hover:bg-brasa-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Enviar registro</button>
+          <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-md bg-brasa-700 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-brasa-900/40 transition hover:bg-brasa-800 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Enviar registro</button>
           <button id="limpiar-formulario" type="reset" class="inline-flex min-h-11 items-center justify-center rounded-md border border-brasa-500 px-6 py-3 text-base font-semibold text-brasa-100 transition hover:bg-brasa-700/20 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Limpiar</button>
         </section>
 

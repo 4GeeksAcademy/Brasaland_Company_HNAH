@@ -24,32 +24,7 @@
     <link rel="alternate" hreflang="es" href="https://brasaland.com/">
     <link rel="alternate" hreflang="en" href="https://brasaland.com/?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://brasaland.com/">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brasa: {
-                50: "#fff7ed",
-                100: "#ffedd5",
-                500: "#f97316",
-                600: "#ea580c",
-                700: "#c2410c",
-                800: "#9a3412"
-              }
-            },
-            fontFamily: {
-              sans: ["Barlow", "sans-serif"],
-              display: ["Merriweather", "serif"]
-            }
-          }
-        }
-      };
-    </script>
+    <link rel="stylesheet" href="./dist/styles.css">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -108,8 +83,8 @@
             <li class="pt-2 md:hidden">
               <fieldset class="inline-flex items-center gap-1 rounded-full border border-brasa-700/60 p-1" aria-label="Selector de idioma móvil">
                 <legend class="sr-only">Idioma</legend>
-                <button type="button" data-lang="es" class="lang-button rounded-full bg-brasa-600 px-3 py-1 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Cambiar idioma a español">ES</button>
-                <button type="button" data-lang="en" class="lang-button rounded-full px-3 py-1 text-sm font-semibold text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Switch language to English">EN</button>
+                <button type="button" data-lang="es" class="lang-button rounded-full bg-brasa-700 px-3 py-1 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Cambiar idioma a español" aria-pressed="true">ES</button>
+                <button type="button" data-lang="en" class="lang-button rounded-full px-3 py-1 text-sm font-semibold text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Switch language to English" aria-pressed="false">EN</button>
               </fieldset>
             </li>
           </ul>
@@ -117,8 +92,8 @@
 
         <fieldset class="hidden items-center gap-1 rounded-full border border-brasa-700/60 p-1 md:flex" aria-label="Selector de idioma">
           <legend class="sr-only">Idioma</legend>
-          <button type="button" data-lang="es" class="lang-button rounded-full bg-brasa-600 px-3 py-1 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Cambiar idioma a español">ES</button>
-          <button type="button" data-lang="en" class="lang-button rounded-full px-3 py-1 text-sm font-semibold text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Switch language to English">EN</button>
+          <button type="button" data-lang="es" class="lang-button rounded-full bg-brasa-700 px-3 py-1 text-sm font-semibold text-white focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Cambiar idioma a español" aria-pressed="true">ES</button>
+          <button type="button" data-lang="en" class="lang-button rounded-full px-3 py-1 text-sm font-semibold text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-300" aria-label="Switch language to English" aria-pressed="false">EN</button>
         </fieldset>
       </section>
     </header>
@@ -126,7 +101,10 @@
     <main id="contenido-principal">
       <section id="inicio" class="relative isolate overflow-hidden border-b border-brasa-700/30">
         <figure class="absolute inset-0 -z-20" aria-hidden="true">
-          <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=1600&q=80" alt="Parrilla encendida con cortes de carne a la brasa" class="h-full w-full object-cover" width="1600" height="900">
+          <picture>
+            <source type="image/avif" srcset="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=avif&q=68&w=640 640w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=avif&q=68&w=768 768w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=avif&q=68&w=1024 1024w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=avif&q=68&w=1280 1280w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=avif&q=68&w=1600 1600w" sizes="100vw">
+            <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=webp&q=68&w=1280" srcset="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=webp&q=68&w=640 640w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=webp&q=68&w=768 768w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=webp&q=68&w=1024 1024w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=webp&q=68&w=1280 1280w, https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?fit=crop&fm=webp&q=68&w=1600 1600w" sizes="100vw" alt="Parrilla encendida con cortes de carne a la brasa" class="h-full w-full object-cover" width="1600" height="900" fetchpriority="high" decoding="async">
+          </picture>
         </figure>
         <section class="absolute inset-0 -z-10 bg-gradient-to-r from-stone-950 via-stone-950/85 to-brasa-900/70" aria-hidden="true"></section>
 
@@ -135,7 +113,7 @@
             <p class="mb-3 inline-flex rounded-full border border-brasa-400/60 bg-brasa-600/20 px-3 py-1 text-sm font-semibold text-brasa-100" data-i18n="heroBadge">Desde Medellín para Colombia y USA</p>
             <h1 data-i18n="heroTitle" class="font-display text-4xl leading-tight text-white md:text-5xl">El sabor de la brasa, en cada bocado</h1>
             <p data-i18n="heroSubtitle" class="mt-5 max-w-2xl text-lg leading-relaxed text-stone-200">Desde 2008 sirviendo las mejores carnes a la brasa en Colombia y Estados Unidos. 14 ubicaciones, una misma pasión por la calidad y el sabor.</p>
-            <a data-i18n="heroCta" href="./application.html#registro" class="mt-8 inline-flex min-h-11 items-center justify-center rounded-md bg-brasa-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-brasa-900/50 transition hover:bg-brasa-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Únete a Brasa Points</a>
+            <a data-i18n="heroCta" href="./application.html#registro" class="mt-8 inline-flex min-h-11 items-center justify-center rounded-md bg-brasa-700 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-brasa-900/50 transition hover:bg-brasa-800 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brasa-300">Únete a Brasa Points</a>
           </article>
 
           <article id="menu" class="rounded-2xl border border-brasa-500/40 bg-stone-900/80 p-6 shadow-xl shadow-stone-950/60 backdrop-blur">
@@ -152,7 +130,10 @@
           <p class="mt-5 max-w-prose text-lg leading-relaxed text-stone-200">Fundada en Medellín en 2008, Brasaland comenzó como un sueño familiar: compartir el auténtico sabor de la carne a la brasa con calidad constante y servicio cálido. Hoy somos 14 restaurantes en dos países, pero mantenemos la misma receta de éxito: productos frescos, técnicas tradicionales, y pasión por cada plato que servimos.</p>
         </article>
         <figure class="overflow-hidden rounded-2xl border border-brasa-700/40 shadow-lg shadow-stone-950/60">
-          <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80" alt="Familia disfrutando una comida a la brasa en un restaurante cálido" class="h-80 w-full object-cover md:h-96" width="1200" height="900">
+          <picture>
+            <source type="image/avif" srcset="https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=avif&q=68&w=480 480w, https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=avif&q=68&w=768 768w, https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=avif&q=68&w=1024 1024w" sizes="(min-width: 1024px) 50vw, 100vw">
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=webp&q=68&w=768" srcset="https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=webp&q=68&w=480 480w, https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=webp&q=68&w=768 768w, https://images.unsplash.com/photo-1552566626-52f8b828add9?fit=crop&fm=webp&q=68&w=1024 1024w" sizes="(min-width: 1024px) 50vw, 100vw" alt="Familia disfrutando una comida a la brasa en un restaurante cálido" class="h-80 w-full object-cover md:h-96" width="1200" height="900" loading="lazy" decoding="async">
+          </picture>
           <figcaption data-i18n="historiaCaption" class="bg-stone-900/95 px-4 py-3 text-base text-stone-200">Una tradición familiar que creció sin perder su esencia.</figcaption>
         </figure>
       </section>
@@ -367,9 +348,10 @@
 
         languageButtons.forEach((button) => {
           const isActive = button.getAttribute("data-lang") === language;
-          button.classList.toggle("bg-brasa-600", isActive);
+          button.classList.toggle("bg-brasa-700", isActive);
           button.classList.toggle("text-white", isActive);
           button.classList.toggle("text-brasa-100", !isActive);
+          button.setAttribute("aria-pressed", String(isActive));
         });
       };
 

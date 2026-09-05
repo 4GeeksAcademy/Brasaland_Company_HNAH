@@ -25,6 +25,19 @@ npx http-server . -p 3000 -a 0.0.0.0
 
 Then open the forwarded port (`3000`) and set it to **Public** if you need an external URL for audits.
 
+### Production CSS and Pages deployment
+
+Tailwind is compiled at build time and served from `dist/styles.css`; the site does not use the Tailwind Play CDN. Run the following before a local audit after changing HTML classes or `styles.css`:
+
+```bash
+npm ci
+npm run build:css
+```
+
+The GitHub Actions workflow in `.github/workflows/deploy-pages.yml` runs this same build and deploys the resulting static site on every push to `main`. In repository settings, set **Pages > Build and deployment > Source** to **GitHub Actions**.
+
+The Barlow and Merriweather WOFF2 files are stored under `fonts/` and referenced by `styles.css`, so no Google Fonts request is made during page load.
+
 ---
 
 ## Purpose
