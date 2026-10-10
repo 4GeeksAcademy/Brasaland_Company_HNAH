@@ -1,11 +1,14 @@
 {
   "private": true,
   "scripts": {
+    "prestart": "npm run build",
+    "start": "http-server . -p 8080 -a 0.0.0.0 -c-1",
     "build:css": "tailwindcss -i ./styles.css -o ./dist/styles.css --minify",
-    "build": "npm run build:css",
+    "build": "tsc && npm run build:css",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "http-server": "14.1.1",
     "tailwindcss": "3.4.17"
   },
   "dependencies": {

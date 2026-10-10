@@ -49,3 +49,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.ops-control {
+		@apply min-h-11 w-full min-w-0 rounded-md border border-stone-600 bg-stone-950 px-3 py-2 text-base text-stone-100 focus:outline-none focus:ring-2 focus:ring-brasa-400;
+	}
+	.ops-command {
+		@apply min-h-11 w-full rounded-md bg-brasa-700 px-4 py-2 text-base font-semibold text-white hover:bg-brasa-600 focus:outline-none focus:ring-2 focus:ring-brasa-300;
+	}
+}
