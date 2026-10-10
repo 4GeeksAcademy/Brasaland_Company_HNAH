@@ -35,9 +35,9 @@ export function validateSaleTransaction(sale: SaleTransaction): { valid: boolean
   return { valid: errors.length === 0, errors };
 }
 
-export function validateLocation(location: Location): { valid: boolean; errors: string[] } {
+export function validateLocation(location: Location, referenceDate: Date): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  const currentYear = new Date().getFullYear();
+  const currentYear = referenceDate.getUTCFullYear();
 
   if (location.openingYear < 2008 || location.openingYear > currentYear) {
     errors.push("Opening year must be between 2008 and the current year.");

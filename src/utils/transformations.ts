@@ -20,8 +20,15 @@ function sumSalesRevenue(sales: SaleTransaction[], currency: keyof Price): numbe
   return sales.reduce((total, sale) => total + sale.totalPrice[currency], 0);
 }
 
-export function calculateDailyRevenue(sales: SaleTransaction[], date: Date, currency: "USD" | "COP"): number {
-  const matchingSales = sales.filter((sale) => sale.timestamp.toDateString() === date.toDateString());
+export function calculateDailyRevenue(
+  sales: SaleTransaction[],
+  referenceDate: Date,
+  currency: "USD" | "COP",
+  timeZone: string = "America/Bogota",
+): number {
+  const formatter = new Intl.DateTimeFormat("en-CA", { timeZone });
+  const referenceDay = formatter.format(referenceDate);
+  const matchingSales = sales.filter((sale) => formatter.format(sale.timestamp) === referenceDay);
   return roundToTwo(sumSalesRevenue(matchingSales, currency));
 }
 
@@ -63,16 +70,17 @@ export function scoreLocationPerformance(
   sales: SaleTransaction[],
   wasteRecords: WasteRecord[],
   menuItems: MenuItem[],
+  referenceDate: Date,
 ): number {
   const locationSales = sales.filter((sale) => sale.locationId === location.id);
   const revenue = sumSalesRevenue(locationSales, "USD");
-  const openingDate = new Date(location.openingYear, 0, 1);
-  const operatingDays = Math.max(1, Math.ceil((Date.now() - openingDate.getTime()) / 86_400_000));
+  const openingDate = new Date(Date.UTC(location.openingYear, 0, 1));
+  const operatingDays = Math.max(1, Math.ceil((referenceDate.getTime() - openingDate.getTime()) / 86_400_000));
   const revenueScore = Math.min((revenue / operatingDays / 1000) * 40, 40);
-  const efficiencyScore = Math.min((locationSales.length / location.seatingCapacity) * 30, 30);
+  const efficiencyScore = location.seatingCapacity <= 0 ? 0 : Math.min((locationSales.length / location.seatingCapacity) * 30, 30);
   const wastePercentage = revenue === 0 ? 0 : (calculateWasteCost(wasteRecords, location.id, "USD") / revenue) * 100;
   const wasteControlScore = Math.max(20 - wastePercentage * 2, 0);
-  const marginScore = Math.min(calculateLocationMargin(sales, menuItems, location.id, "USD") / 10, 10);
+  const marginScore = Math.max(0, Math.min(calculateLocationMargin(sales, menuItems, location.id, "USD") / 10, 10));
 
   return roundToTwo(revenueScore + efficiencyScore + wasteControlScore + marginScore);
 }
@@ -82,9 +90,10 @@ export function rankLocationsByPerformance(
   sales: SaleTransaction[],
   wasteRecords: WasteRecord[],
   menuItems: MenuItem[],
+  referenceDate: Date,
 ): Array<{ location: Location; score: number }> {
   return locations
-    .map((location) => ({ location, score: scoreLocationPerformance(location, sales, wasteRecords, menuItems) }))
+    .map((location) => ({ location, score: scoreLocationPerformance(location, sales, wasteRecords, menuItems, referenceDate) }))
     .sort((first, second) => second.score - first.score);
 }
 
