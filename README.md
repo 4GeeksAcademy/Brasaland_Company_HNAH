@@ -54,6 +54,8 @@ dist/                     Generated ES modules and Tailwind CSS
 
 Run `npm run build` after changing TypeScript, HTML classes or CSS; the static server does not rebuild automatically. JS output in `dist` is ignored by Git. The existing tracked CSS is retained. The demo exits unsuccessfully if an assertion fails and checks empty/singleton collections, duplicates, absent records, partial/null input, nonfinite numbers, temporal boundaries and input immutability.
 
+The [Spanish PR description draft](docs/pr-description.md) includes implemented functionality, challenges and verified operation screenshots stored in [docs/screenshots](docs/screenshots).
+
 This checkout does not include a Docker Compose stack, an API, or a Streamlit dashboard. The static website runs independently of those services; ports `8000` and `8501` are not used by this command. GitHub Pages deployment remains separate from local startup.
 
 ### Production CSS and Pages deployment

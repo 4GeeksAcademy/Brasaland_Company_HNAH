@@ -46,6 +46,8 @@ dist/                      Módulos ES y CSS generados
 
 Los JS generados se excluyen de Git; se conserva el CSS ya versionado. El demo falla si una aserción no se cumple y verifica listas vacías, un elemento, ausencias, duplicados, entradas parciales/nulas, números no finitos, límites temporales y no mutación.
 
+El [borrador de descripción del PR](docs/pr-description.md) incluye las funcionalidades, desafíos y capturas verificadas. Las imágenes están en [docs/screenshots](docs/screenshots).
+
 ### Trazabilidad CONTEXT.md → interfaz/campo
 
 El contexto describe necesidades, no un esquema literal. Los siguientes campos son propuestas técnicas, no requisitos inventados del negocio.
