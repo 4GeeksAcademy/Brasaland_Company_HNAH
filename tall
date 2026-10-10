@@ -1,0 +1,12 @@
+[33m4c16ee3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/domain-models[m[33m, [m[1;31morigin/feature/domain-models[m[33m)[m Verifica la entrega y prepara el borrador del PR con capturas de operaciones
+[33mc4df7d7[m Limpia artefactos y documenta ejecucion trazabilidad y supuestos del hito
+[33mc3f554f[m Agrega un demo con pruebas de casos borde y validacion reproducible
+[33mce90765[m Conecta la interfaz de operaciones con modulos ES compilados en dist
+[33m871f545[m Modela las entidades de Brasaland y agrega reportes por periodo y sede
+[33m5f0b1cb[m Implementa ordenamiento estable por multiples campos sin mutar entradas
+[33m57cb428[m Agrega conteos y agregaciones genericas con manejo de listas vacias
+[33m355f566[m Valida entradas desconocidas y rechaza numeros no finitos sin excepciones
+[33m93c45ed[m Hace explicitas la fecha de referencia y la zona horaria de los calculos
+[33m74be47f[m Documenta la especificacion del hito de utilidades TypeScript
+[33m382319a[m Implementa los modelos y las utilidades de operaciones de Brasaland
+[33mfce098c[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge branch 'main' of https://github.com/4GeeksAcademy/Brasaland_Company_HNAH
