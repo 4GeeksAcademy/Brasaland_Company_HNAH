@@ -9,6 +9,37 @@ _Estas instrucciones tambien estan disponibles en [espanol](./README.es.md)._
 
 ---
 
+## Brasaland Public Website (Root)
+
+This repository now includes a public website implementation in the project root:
+
+- `index.html` (landing page)
+- `application.html` (Brasa Points registration form)
+- `validation.js` (form validations and dependent field logic)
+
+### Run locally in Codespaces
+
+```bash
+npx http-server . -p 3000 -a 0.0.0.0
+```
+
+Then open the forwarded port (`3000`) and set it to **Public** if you need an external URL for audits.
+
+### Production CSS and Pages deployment
+
+Tailwind is compiled at build time and served from `dist/styles.css`; the site does not use the Tailwind Play CDN. Run the following before a local audit after changing HTML classes or `styles.css`:
+
+```bash
+npm ci
+npm run build:css
+```
+
+The GitHub Actions workflow in `.github/workflows/deploy-pages.yml` runs this same build and deploys the resulting static site on every push to `main`. In repository settings, set **Pages > Build and deployment > Source** to **GitHub Actions**.
+
+The Barlow and Merriweather WOFF2 files are stored under `fonts/` and referenced by `styles.css`, so no Google Fonts request is made during page load.
+
+---
+
 ## Purpose
 
 This repository is the **starter template** for transversal projects. You will work on real company scenarios (Brasaland, TrackFlow, Nexova), building deliverables that map to course milestones (Web, Programming, Backend, Telemetry, RAG, Agents, Workflows, Real-time).
