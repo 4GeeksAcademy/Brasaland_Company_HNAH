@@ -9,6 +9,72 @@ _These instructions are also available in [English](./README.md)._
 
 ---
 
+## Sitio web de Brasaland: ejecución local
+
+El landing, el formulario Brasa Points y la interfaz de operaciones se encuentran en la raíz del proyecto. Requiere Node.js 20 o superior. Para compilar, validar y probar:
+
+```bash
+npm ci
+npm run typecheck
+npm run build
+npm run demo
+npx http-server . -p 3000 -a 0.0.0.0
+```
+
+Abre http://localhost:3000/#operaciones. Prueba el filtro de categorías, la búsqueda lineal por ID, la búsqueda binaria por capacidad, el orden por capacidad/nombre y los reportes. Los datos son ficticios y la fecha inicial es el 10 de octubre de 2026. La búsqueda binaria ordena primero por capacidad ascendente; con duplicados puede devolver cualquiera de los índices coincidentes. Los resultados vacíos se indican en la tabla.
+
+Como alternativa, `npm start` compila TypeScript y Tailwind y sirve el sitio en http://localhost:8080. En Codespaces, abre el puerto reenviado que utilices (`3000` u `8080`); hazlo público solo si necesitas una URL externa para auditorías. Detén el servidor con `Ctrl+C`.
+
+Repite `npm run build` al cambiar TypeScript, clases HTML o CSS: el servidor estático no recompila automáticamente. GitHub Pages ejecuta el build completo al publicar en `main`.
+
+Esta copia del repositorio no incluye Docker Compose, una API ni un dashboard Streamlit. El sitio estático se ejecuta por separado; este comando no utiliza los puertos `8000` ni `8501`. El despliegue en GitHub Pages sigue siendo independiente del arranque local.
+
+### Estructura del hito
+
+```text
+src/
+	app.ts                   Controles y resultados en el navegador
+	sample-data.ts           Datos ficticios compartidos
+	demo.ts                  47 casos de prueba con aserciones
+	types/models.ts          Interfaces del dominio y reportes
+	utils/collections.ts     Filtros y ordenamiento
+	utils/search.ts          Búsquedas lineal y binaria
+	utils/transformations.ts Agregaciones y reportes
+	utils/validations.ts     Validadores de entradas unknown
+dist/                      Módulos ES y CSS generados
+```
+
+Los JS generados se excluyen de Git; se conserva el CSS ya versionado. El demo falla si una aserción no se cumple y verifica listas vacías, un elemento, ausencias, duplicados, entradas parciales/nulas, números no finitos, límites temporales y no mutación.
+
+El [borrador de descripción del PR](docs/pr-description.md) incluye las funcionalidades, desafíos y capturas verificadas. Las imágenes están en [docs/screenshots](docs/screenshots).
+
+### Trazabilidad CONTEXT.md → interfaz/campo
+
+El contexto describe necesidades, no un esquema literal. Los siguientes campos son propuestas técnicas, no requisitos inventados del negocio.
+
+| Necesidad del contexto             | Interfaz / campos propuestos                                                                                       | Reporte o alcance                                  |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| Sedes, ventas y doble moneda       | `Location.id/country/state`, `SaleTransaction.id/locationId/itemId/quantity/totalPrice/timestamp`, `Price.USD/COP` | `calculateLocationSalesTotals`                     |
+| Ventas semanales de Florida        | Campos de sede, país/estado y fecha de venta                                                                       | `calculateWeeklyFloridaSales`                      |
+| Mayor ticket medio mensual         | `LocationSalesReport.locationId/totalSales/totalRevenue/averageTicket`                                             | `findHighestMonthlyTicket`                         |
+| CRM y Brasa Points                 | `Customer.id/name/country/orderHistory/preferences/loyaltyPoints`, `SaleTransaction.customerId`                    | Historial con IDs de ventas; sin fórmula de puntos |
+| Proveedores e histórico de precios | `Supplier.id/name/country/ingredientIds/priceHistory`                                                              | Histórico con ingrediente, precio y fecha efectiva |
+| Empleados, contratos y ausencias   | `Employee.id/name/country/locationId/role/contractStartDate/contractEndDate/absences`                              | Fechas y tipo de ausencia, sin reglas laborales    |
+| Ingredientes y stock actual        | `Ingredient.id/name/unit/supplierIds`, `StockRecord.id/locationId/ingredientId/quantity/updatedAt`                 | Modelo, no predicción de pedidos                   |
+| Recetas y formación bilingüe       | `Recipe.id/menuItemId/name/ingredients/instructions/language/updatedAt`                                            | Modelo, no notificaciones                          |
+
+### Supuestos y límites
+
+- Semana de lunes a domingo y meses naturales. Florida usa `America/New_York`; Colombia usa `America/Bogota`. El ingreso diario permite indicar otra zona IANA. Los cálculos temporales reciben `referenceDate`; no leen el reloj global.
+- Una sede USA sin `state` se considera Florida según el alcance actual del contexto; otras sedes deben indicar el estado. La fecha elegida en la interfaz se convierte a las 12:00 UTC para conservar ese día en ambos mercados.
+- Cada `SaleTransaction` cuenta como un ticket; no se agrupan pedidos. Los totales suman los importes COP y USD proporcionados. La conversión fija heredada de 1 USD = 4000 COP es un supuesto, no una tasa actual.
+- Se comprueban campos requeridos por las interfaces, tipos, enums, números finitos y fechas válidas. Precios/cantidades/capacidad/personal/costes positivos, preparación de hasta 60 minutos, disponibilidad en un país y apertura desde 2008 hasta el año de referencia son restricciones heredadas, no reglas literales del contexto. El coste de ingredientes puede ser cero. No se prohíben ventas futuras ni cantidades fraccionarias.
+- Total genérico vacío: `0`; promedio, máximo y mínimo vacíos: `undefined`. Los extremos devuelven el elemento, manteniendo el primero en empates. Orden multicampo estable, texto lexicográfico y nulos al final en ascendente/al principio en descendente.
+- Los márgenes financieros pueden ser negativos. Solo el componente de margen del puntaje se limita a 0-10; sus pesos y el 1 de enero como fecha de apertura son supuestos heredados. Capacidad cero aporta eficiencia cero.
+- Estas entidades no implementan una API, un CRM completo, predicción de stock, reglas laborales ni envío automático de informes los lunes a las 07:00. El alcance es modelado, utilidades y reportes locales.
+
+---
+
 ## Propósito
 
 Este repositorio es la **plantilla de inicio** para los proyectos transversales. Trabajarás con escenarios de empresas reales (Brasaland, TrackFlow, Nexova) construyendo entregables que se corresponden con los hitos del curso (Web, Programación, Backend, Telemetría, RAG, Agentes, Workflows, Tiempo real).
@@ -51,9 +117,9 @@ Estás construyendo **una sola empresa** a lo largo de muchos hitos y proyectos.
 
 ## Estado actual de la plantilla
 
-> 💡 Actualmente el repositorio ofrece solo una **estructura base de carpetas y documentación**. Todavía no incluye aplicaciones ejecutables ni scripts globales en la raíz.
+> El repositorio incluye el sitio de Brasaland, utilidades TypeScript de operaciones, una interfaz interactiva de pruebas y un demo ejecutable. El resto de carpetas conserva la estructura base para hitos posteriores.
 >
-> - `CONTEXT.md` es un placeholder y debe sustituirse por el contexto de la empresa asignada.
+> - `CONTEXT.md` contiene el briefing de Brasaland; los campos y supuestos están documentados arriba.
 > - No existe todavía un `AGENTS.md` en la raíz.
 > - Existe metadata del paquete compartido en `packages/shared/package.json` (`@repo/shared-types`), pero aún no hay runner de workspace en raíz.
 

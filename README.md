@@ -13,17 +13,50 @@ _Estas instrucciones tambien estan disponibles en [espanol](./README.es.md)._
 
 This repository now includes a public website implementation in the project root:
 
-- `index.html` (landing page)
+- `index.html` (landing page and operations interface at `#operaciones`)
 - `application.html` (Brasa Points registration form)
 - `validation.js` (form validations and dependent field logic)
 
 ### Run locally in Codespaces
 
 ```bash
+npm ci
+npm run typecheck
+npm run build
+npm run demo
 npx http-server . -p 3000 -a 0.0.0.0
 ```
 
-Then open the forwarded port (`3000`) and set it to **Public** if you need an external URL for audits.
+Open http://localhost:3000/#operaciones. The interface supports menu filters, linear ID search, binary capacity search, multicolumn location sorting, and reports with visible empty states. Sample data is fictitious; the reference date defaults to October 10, 2026. Binary search requires ascending capacity order, prepared by the interface, and may return any matching index for duplicates.
+
+Alternatively, build and start the website on port 8080:
+
+```bash
+npm start
+```
+
+`npm start` compiles TypeScript and Tailwind CSS and serves the website at http://localhost:8080. In Codespaces, forward the port you use (`3000` or `8080`). Keep it private unless an external audit needs access. Stop the server with `Ctrl+C`.
+
+### TypeScript structure
+
+```text
+src/
+	app.ts                  Browser controls and table rendering
+	sample-data.ts          Shared fictitious fixtures
+	demo.ts                 47 assertion-based test cases
+	types/models.ts         Domain interfaces and report types
+	utils/collections.ts    Filters and sorting
+	utils/search.ts         Linear and binary search
+	utils/transformations.ts Aggregations and reports
+	utils/validations.ts    Unknown-input validators
+dist/                     Generated ES modules and Tailwind CSS
+```
+
+Run `npm run build` after changing TypeScript, HTML classes or CSS; the static server does not rebuild automatically. JS output in `dist` is ignored by Git. The existing tracked CSS is retained. The demo exits unsuccessfully if an assertion fails and checks empty/singleton collections, duplicates, absent records, partial/null input, nonfinite numbers, temporal boundaries and input immutability.
+
+The [Spanish PR description draft](docs/pr-description.md) includes implemented functionality, challenges and verified operation screenshots stored in [docs/screenshots](docs/screenshots).
+
+This checkout does not include a Docker Compose stack, an API, or a Streamlit dashboard. The static website runs independently of those services; ports `8000` and `8501` are not used by this command. GitHub Pages deployment remains separate from local startup.
 
 ### Production CSS and Pages deployment
 
@@ -31,7 +64,7 @@ Tailwind is compiled at build time and served from `dist/styles.css`; the site d
 
 ```bash
 npm ci
-npm run build:css
+npm run build
 ```
 
 The GitHub Actions workflow in `.github/workflows/deploy-pages.yml` runs this same build and deploys the resulting static site on every push to `main`. In repository settings, set **Pages > Build and deployment > Source** to **GitHub Actions**.
@@ -41,6 +74,31 @@ The Barlow and Merriweather WOFF2 files are stored under `fonts/` and referenced
 ---
 
 ## Purpose
+
+### Context traceability and implementation assumptions
+
+`CONTEXT.md` describes business needs, not a formal schema. The following fields are proposed implementation choices, not literal context requirements.
+
+| CONTEXT.md need                          | Interface / fields                                                                                 | Implementation                                                                  |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Locations and sales in COP/USD           | `Location.id/country/state`, `SaleTransaction.locationId/timestamp/totalPrice`, `Price.USD/COP`    | `calculateLocationSalesTotals`                                                  |
+| Weekly Florida sales                     | Same location/sale fields                                                                          | `calculateWeeklyFloridaSales`                                                   |
+| Highest average ticket this month        | `LocationSalesReport.averageTicket/totalSales`                                                     | `findHighestMonthlyTicket`                                                      |
+| Customer CRM, history and preferences    | `Customer.id/name/country/orderHistory/preferences/loyaltyPoints`, `SaleTransaction.customerId`    | Typed data model; history contains sale IDs                                     |
+| Suppliers and price history              | `Supplier.id/name/country/ingredientIds/priceHistory`                                              | Typed data model; price entries contain ingredient ID, price and effective date |
+| Employees, contracts and absences        | `Employee.id/name/country/locationId/role/contractStartDate/contractEndDate/absences`              | Typed data model, not labour-law rules                                          |
+| Ingredients and current stock            | `Ingredient.id/name/unit/supplierIds`, `StockRecord.id/locationId/ingredientId/quantity/updatedAt` | Typed data model; units are descriptive strings                                 |
+| Searchable recipes and bilingual updates | `Recipe.id/menuItemId/name/ingredients/instructions/language/updatedAt`                            | Typed data model, not a notification service                                    |
+
+Assumptions and limits:
+
+- Weeks run Monday through Sunday, and months are calendar months. Florida uses `America/New_York`; Colombia uses `America/Bogota`. Daily revenue defaults to Bogota and accepts an explicit IANA timezone. All clock-dependent calculations take `referenceDate`.
+- USA locations without `state` are treated as Florida, matching the current briefing. Set `state` to `Florida`/`FL` or another state explicitly when extending the chain.
+- A ticket means one `SaleTransaction`, not a grouped restaurant order. Monetary values are provided in both currencies; no current exchange rate is inferred. The existing conversion utility uses the legacy assumption 1 USD = 4000 COP.
+- IDs, names, enums, finite numbers and valid Date instances are structural checks. Existing positive price/quantity/capacity/staff/cost rules, the 60-minute preparation limit, country availability, and opening years from 2008 through the reference year are retained assumptions from the previous implementation, not rules stated by CONTEXT.md. Ingredient costs may be zero. Future sale timestamps are not prohibited.
+- Total of an empty generic collection is zero; its average/minimum/maximum is `undefined`. Maximum/minimum return the selected item; ties keep the first item. Multicolumn sorts are stable; strings use lexical ordering, nullish values follow other values in ascending order and precede them in descending order.
+- Negative business margins remain meaningful; the performance margin component alone is bounded to 0-10. Performance weights and the assumed January 1 opening date are inherited scoring assumptions. Capacity zero contributes zero efficiency.
+- Models are not a CRM, HR portal, stock forecasting system, API or scheduler. This milestone implements reusable types and local reports, not Monday 07:00 delivery or live integrations.
 
 This repository is the **starter template** for transversal projects. You will work on real company scenarios (Brasaland, TrackFlow, Nexova), building deliverables that map to course milestones (Web, Programming, Backend, Telemetry, RAG, Agents, Workflows, Real-time).
 
@@ -82,9 +140,9 @@ You are building **one company** across many milestones and projects. Each top-l
 
 ## Current status of the template
 
-> 💡 This repository currently provides a **base folder structure and documentation skeleton** only. It does not include runnable apps or global scripts yet.
+> This repository includes the Brasaland website, TypeScript operations utilities, an interactive test interface and a runnable demo. Other monorepo folders remain scaffolding for later milestones.
 >
-> - `CONTEXT.md` is a placeholder and must be replaced with your assigned company context.
+> - `CONTEXT.md` contains the Brasaland briefing; schema choices and assumptions are documented above.
 > - There is no root `AGENTS.md` yet.
 > - Shared package metadata exists in `packages/shared/package.json` (`@repo/shared-types`), but no workspace runner is configured at root.
 
