@@ -1,5 +1,5 @@
 import { deepStrictEqual, ok, strictEqual } from "node:assert";
-import type { Location, MenuItem, SaleTransaction } from "./types/models.js";
+import type { Customer, Employee, Ingredient, Location, MenuItem, Recipe, SaleTransaction, StockRecord, Supplier } from "./types/models.js";
 import * as collections from "./utils/collections.js";
 import * as search from "./utils/search.js";
 import * as reports from "./utils/transformations.js";
@@ -186,6 +186,77 @@ test("restricciones heredadas explicitamente documentadas", (): void => {
   strictEqual(validations.validateLocation({ ...location, openingYear: 2007 }, sampleReferenceDate).valid, false);
   strictEqual(validations.validateLocation({ ...location, openingYear: 2027 }, sampleReferenceDate).valid, false);
 });
+test("agrupacion generica, vacios y no mutacion", (): void => {
+  strictEqual(collections.groupBy([], (value: string): string => value).size, 0);
+  const groups = collections.groupBy(sampleMenuItems, (value: MenuItem): string => value.category);
+  strictEqual(groups.get("Meat")?.length, 2);
+  deepStrictEqual(collections.groupBy(["__proto__"], (value: string): string => value).get("__proto__"), ["__proto__"]);
+  const before = structuredClone(sampleMenuItems);
+  groups.get("Meat")?.pop();
+  deepStrictEqual(sampleMenuItems, before);
+  deepStrictEqual(collections.groupBy([null, undefined], (value: unknown): unknown => value).get(null), [null]);
+});
+test("filtros por criterios combinados", (): void => {
+  const filtered = collections.filterSalesByDateRange(collections.filterSalesByLocation(sampleSales, "LOC-MIAMI"), new Date("2026-10-01"), new Date("2026-10-31"));
+  deepStrictEqual(filtered.map((value: SaleTransaction): string => value.id), ["SALE-2", "SALE-3"]);
+});
+
+const customer: Customer = { id: "CUSTOMER-1", name: "Cliente de ejemplo", country: "Colombia", orderHistory: [sale.id], preferences: [], loyaltyPoints: 0 };
+const supplier: Supplier = { id: "SUPPLIER-1", name: "Proveedor de ejemplo", country: "Colombia", ingredientIds: ["ING-1"], priceHistory: [{ ingredientId: "ING-1", price: { USD: 0, COP: 0 }, effectiveDate: sampleReferenceDate }] };
+const employee: Employee = { id: "EMPLOYEE-1", name: "Personal de ejemplo", country: "Colombia", locationId: location.id, role: "Cocina", contractStartDate: new Date("2026-01-01"), absences: [] };
+const ingredient: Ingredient = { id: "ING-1", name: "Ingrediente de ejemplo", unit: "kg", supplierIds: [supplier.id] };
+const stock: StockRecord = { id: "STOCK-1", locationId: location.id, ingredientId: ingredient.id, quantity: 0, updatedAt: sampleReferenceDate };
+const recipe: Recipe = { id: "RECIPE-1", menuItemId: item.id, name: "Receta de ejemplo", ingredients: [{ ingredientId: ingredient.id, quantity: 0.5 }], instructions: ["Preparacion de ejemplo"], language: "es", updatedAt: sampleReferenceDate };
+
+for (const [name, validator, valid, invalid] of [
+  ["cliente", validations.validateCustomer, customer, { ...customer, loyaltyPoints: NaN }],
+  ["proveedor", validations.validateSupplier, supplier, { ...supplier, priceHistory: [null, { ingredientId: "ING-1", price: { USD: Infinity, COP: 1 }, effectiveDate: null }] }],
+  ["empleado", validations.validateEmployee, employee, { ...employee, contractEndDate: new Date("2025-01-01"), absences: [null] }],
+  ["ingrediente", validations.validateIngredient, ingredient, { ...ingredient, supplierIds: [null] }],
+  ["stock", validations.validateStockRecord, stock, { ...stock, quantity: -1 }],
+  ["receta", validations.validateRecipe, recipe, { ...recipe, ingredients: [null, { ingredientId: "ING-1", quantity: NaN }] }],
+  ["desperdicio", validations.validateWasteRecord, sampleWasteRecords[0], { ...sampleWasteRecords[0], cost: { USD: Infinity, COP: 1 } }],
+] as [string, (value: unknown) => validations.ValidationResult, unknown, unknown][]) {
+  test(`validador ${name} estructura segura y datos parciales`, (): void => {
+    strictEqual(validator(valid).valid, true);
+    strictEqual(validator(invalid).valid, false);
+    for (const value of [null, undefined, {}, [], NaN, Infinity, { id: "PARTIAL" }]) {
+      const result = validator(value);
+      strictEqual(result.valid, false);
+      ok(result.errors.length > 0);
+    }
+    unchanged(valid, (value: unknown): validations.ValidationResult => validator(value));
+    unchanged(invalid, (value: unknown): validations.ValidationResult => validator(value));
+  });
+}
+test("rangos numericos finitos en entidades nuevas", (): void => {
+  for (const value of [-1, NaN, Infinity, -Infinity]) {
+    strictEqual(validations.validateCustomer({ ...customer, loyaltyPoints: value }).valid, false);
+    strictEqual(validations.validateStockRecord({ ...stock, quantity: value }).valid, false);
+    strictEqual(validations.validateRecipe({ ...recipe, ingredients: [{ ingredientId: ingredient.id, quantity: value }] }).valid, false);
+    strictEqual(validations.validateSupplier({ ...supplier, priceHistory: [{ ingredientId: ingredient.id, price: { USD: value, COP: 0 }, effectiveDate: sampleReferenceDate }] }).valid, false);
+    strictEqual(validations.validateWasteRecord({ ...sampleWasteRecords[0], quantity: value }).valid, false);
+  }
+});
+test("contratos y ausencias con fechas coherentes", (): void => {
+  strictEqual(validations.validateEmployee({ ...employee, contractEndDate: employee.contractStartDate }).valid, true);
+  strictEqual(validations.validateEmployee({ ...employee, contractEndDate: new Date("2025-12-31") }).valid, false);
+  strictEqual(validations.validateEmployee({ ...employee, contractStartDate: new Date("invalid") }).valid, false);
+  strictEqual(validations.validateEmployee({ ...employee, absences: [{ type: "Vacaciones", startDate: new Date("2026-05-02"), endDate: new Date("2026-05-01") }] }).valid, false);
+  strictEqual(validations.validateEmployee({ ...employee, absences: [{ type: "Vacaciones", startDate: sampleReferenceDate, endDate: sampleReferenceDate }] }).valid, true);
+  strictEqual(validations.validateEmployee({ ...employee, absences: [{ type: "Vacaciones", startDate: null, endDate: sampleReferenceDate }] }).valid, false);
+});
+test("fechas validas en proveedor stock y receta", (): void => {
+  strictEqual(validations.validateSupplier({ ...supplier, priceHistory: [{ ...supplier.priceHistory[0], effectiveDate: new Date("invalid") }] }).valid, false);
+  strictEqual(validations.validateSupplier({ ...supplier, priceHistory: [{ ...supplier.priceHistory[0], effectiveDate: undefined }] }).valid, false);
+  strictEqual(validations.validateStockRecord({ ...stock, updatedAt: new Date("invalid") }).valid, false);
+  strictEqual(validations.validateRecipe({ ...recipe, updatedAt: null }).valid, false);
+  strictEqual(validations.validateCustomer({ ...customer, name: " ", country: "unknown" }).valid, false);
+});
+test("campos opcionales no aceptan valores mal tipados", (): void => {
+  strictEqual(validations.validateSaleTransaction({ ...sale, customerId: null }).valid, false);
+  strictEqual(validations.validateLocation({ ...location, state: 5 }, sampleReferenceDate).valid, false);
+});
 test("no mutacion en todas las operaciones", (): void => {
   unchanged(sampleLocations, (rows: Location[]): unknown => {
     collections.filterActiveLocations(rows);
@@ -211,6 +282,7 @@ test("no mutacion en todas las operaciones", (): void => {
     return validations.validateSaleTransaction(rows[0]);
   });
   unchanged(sampleMenuItems, (rows: MenuItem[]): unknown => {
+    collections.groupBy(rows, (value: MenuItem): string => value.category);
     collections.filterMenuItemsByCategory(rows, "Meat");
     collections.sortMenuItemsByPrice(rows, "USD", "asc");
     search.findMenuItemByName(rows, "missing");

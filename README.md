@@ -20,7 +20,7 @@ This repository now includes a public website implementation in the project root
 ### Run locally in Codespaces
 
 ```bash
-npm ci
+npm install
 npm run typecheck
 npm run build
 npm run demo
@@ -43,9 +43,9 @@ npm start
 src/
 	app.ts                  Browser controls and table rendering
 	sample-data.ts          Shared fictitious fixtures
-	demo.ts                 47 assertion-based test cases
+	demo.ts                 60 assertion-based test cases
 	types/models.ts         Domain interfaces and report types
-	utils/collections.ts    Filters and sorting
+	utils/collections.ts    Filters, grouping and sorting
 	utils/search.ts         Linear and binary search
 	utils/transformations.ts Aggregations and reports
 	utils/validations.ts    Unknown-input validators
@@ -53,6 +53,10 @@ dist/                     Generated ES modules and Tailwind CSS
 ```
 
 Run `npm run build` after changing TypeScript, HTML classes or CSS; the static server does not rebuild automatically. JS output in `dist` is ignored by Git. The existing tracked CSS is retained. The demo exits unsuccessfully if an assertion fails and checks empty/singleton collections, duplicates, absent records, partial/null input, nonfinite numbers, temporal boundaries and input immutability.
+
+`npm install` installs dependencies (`npm ci` is available for a lockfile-based reinstall). `npm run typecheck` runs `tsc --noEmit` in strict mode. `npm run build` compiles both TypeScript ES modules and Tailwind CSS; `build:css` builds only CSS. `npm run demo` executes 60 tests.
+
+TypeScript business data validation is implemented in [src/utils/validations.ts](src/utils/validations.ts), accepting `unknown` and returning `{ valid, errors }`. The independent Brasa Points JavaScript validation in [validation.js](validation.js) is unchanged; its age/contact/consent rules are not applied to business data. See the [Spanish contrast and milestone verification](docs/verificacion-contraste-hito.md) for evidence and before/after screenshots. Both forms share dark field, option, date, autofill and button states from [styles.css](styles.css); rebuild and refresh without cache after CSS changes. Generated [dist/styles.css](dist/styles.css) remains tracked.
 
 The [Spanish PR description draft](docs/pr-description.md) includes implemented functionality, challenges and verified operation screenshots stored in [docs/screenshots](docs/screenshots).
 
@@ -96,6 +100,8 @@ Assumptions and limits:
 - USA locations without `state` are treated as Florida, matching the current briefing. Set `state` to `Florida`/`FL` or another state explicitly when extending the chain.
 - A ticket means one `SaleTransaction`, not a grouped restaurant order. Monetary values are provided in both currencies; no current exchange rate is inferred. The existing conversion utility uses the legacy assumption 1 USD = 4000 COP.
 - IDs, names, enums, finite numbers and valid Date instances are structural checks. Existing positive price/quantity/capacity/staff/cost rules, the 60-minute preparation limit, country availability, and opening years from 2008 through the reference year are retained assumptions from the previous implementation, not rules stated by CONTEXT.md. Ingredient costs may be zero. Future sale timestamps are not prohibited.
+- New validator assumptions: loyalty points, stock, recipe/waste quantities and supplier prices/waste costs must be finite and nonnegative, including zero. Contract/absence end dates must not precede their start dates; equality is allowed. Empty arrays are valid, but existing entries must match the interface. No customer age, unit vocabulary, points formula, numeric ceiling, price history ordering or labour-law constraints are inferred. ID references are not resolved against a database; consumers own that check.
+- `groupBy(items, selector)` returns a `Map` of keys to new arrays, or an empty `Map` for empty input. Keys can be strings, numbers or nullish values without prototype-property collisions. Grouped items keep their object references; input arrays are not mutated.
 - Total of an empty generic collection is zero; its average/minimum/maximum is `undefined`. Maximum/minimum return the selected item; ties keep the first item. Multicolumn sorts are stable; strings use lexical ordering, nullish values follow other values in ascending order and precede them in descending order.
 - Negative business margins remain meaningful; the performance margin component alone is bounded to 0-10. Performance weights and the assumed January 1 opening date are inherited scoring assumptions. Capacity zero contributes zero efficiency.
 - Models are not a CRM, HR portal, stock forecasting system, API or scheduler. This milestone implements reusable types and local reports, not Monday 07:00 delivery or live integrations.
