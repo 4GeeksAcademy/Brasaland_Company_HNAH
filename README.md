@@ -20,10 +20,13 @@ This repository now includes a public website implementation in the project root
 ### Run locally in Codespaces
 
 ```bash
-npx http-server . -p 3000 -a 0.0.0.0
+npm install
+npm start
 ```
 
-Then open the forwarded port (`3000`) and set it to **Public** if you need an external URL for audits.
+`npm start` compiles the Tailwind CSS and serves the landing at http://localhost:8080. In Codespaces, open the forwarded port (`8080`) and set it to **Public** only if you need an external URL for audits. Stop the server with `Ctrl+C`.
+
+This checkout does not include a Docker Compose stack, an API, or a Streamlit dashboard. The static website runs independently of those services; ports `8000` and `8501` are not used by this command. GitHub Pages deployment remains separate from local startup.
 
 ### Production CSS and Pages deployment
 
@@ -41,6 +44,31 @@ The Barlow and Merriweather WOFF2 files are stored under `fonts/` and referenced
 ---
 
 ## Purpose
+
+### Context traceability and implementation assumptions
+
+`CONTEXT.md` describes business needs, not a formal schema. The following fields are proposed implementation choices, not literal context requirements.
+
+| CONTEXT.md need | Interface / fields | Implementation |
+| --- | --- | --- |
+| Locations and sales in COP/USD | `Location.id/country/state`, `SaleTransaction.locationId/timestamp/totalPrice`, `Price.USD/COP` | `calculateLocationSalesTotals` |
+| Weekly Florida sales | Same location/sale fields | `calculateWeeklyFloridaSales` |
+| Highest average ticket this month | `LocationSalesReport.averageTicket/totalSales` | `findHighestMonthlyTicket` |
+| Customer CRM, history and preferences | `Customer.id/name/country/orderHistory/preferences/loyaltyPoints`, `SaleTransaction.customerId` | Typed data model; history contains sale IDs |
+| Suppliers and price history | `Supplier.id/name/country/ingredientIds/priceHistory` | Typed data model; price entries contain ingredient ID, price and effective date |
+| Employees, contracts and absences | `Employee.id/name/country/locationId/role/contractStartDate/contractEndDate/absences` | Typed data model, not labour-law rules |
+| Ingredients and current stock | `Ingredient.id/name/unit/supplierIds`, `StockRecord.id/locationId/ingredientId/quantity/updatedAt` | Typed data model; units are descriptive strings |
+| Searchable recipes and bilingual updates | `Recipe.id/menuItemId/name/ingredients/instructions/language/updatedAt` | Typed data model, not a notification service |
+
+Assumptions and limits:
+
+- Weeks run Monday through Sunday, and months are calendar months. Florida uses `America/New_York`; Colombia uses `America/Bogota`. Daily revenue defaults to Bogota and accepts an explicit IANA timezone. All clock-dependent calculations take `referenceDate`.
+- USA locations without `state` are treated as Florida, matching the current briefing. Set `state` to `Florida`/`FL` or another state explicitly when extending the chain.
+- A ticket means one `SaleTransaction`, not a grouped restaurant order. Monetary values are provided in both currencies; no current exchange rate is inferred. The existing conversion utility uses the legacy assumption 1 USD = 4000 COP.
+- IDs, names, enums, finite numbers and valid Date instances are structural checks. Existing positive price/quantity/capacity/staff/cost rules, the 60-minute preparation limit, country availability, and opening years from 2008 through the reference year are retained assumptions from the previous implementation, not rules stated by CONTEXT.md. Ingredient costs may be zero. Future sale timestamps are not prohibited.
+- Total of an empty generic collection is zero; its average/minimum/maximum is `undefined`. Maximum/minimum return the selected item; ties keep the first item. Multicolumn sorts are stable; strings use lexical ordering, nullish values follow other values in ascending order and precede them in descending order.
+- Negative business margins remain meaningful; the performance margin component alone is bounded to 0-10. Performance weights and the assumed January 1 opening date are inherited scoring assumptions. Capacity zero contributes zero efficiency.
+- Models are not a CRM, HR portal, stock forecasting system, API or scheduler. This milestone implements reusable types and local reports, not Monday 07:00 delivery or live integrations.
 
 This repository is the **starter template** for transversal projects. You will work on real company scenarios (Brasaland, TrackFlow, Nexova), building deliverables that map to course milestones (Web, Programming, Backend, Telemetry, RAG, Agents, Workflows, Real-time).
 

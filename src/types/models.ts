@@ -23,6 +23,7 @@ export type PaymentMethod = "Cash" | "Credit card" | "Debit card" | "Digital wal
 
 export interface SaleTransaction {
   id: string;
+  customerId?: string;
   locationId: string;
   itemId: string;
   quantity: number;
@@ -40,6 +41,7 @@ export interface Location {
   name: string;
   city: string;
   country: Country;
+  state?: string;
   openingYear: number;
   seatingCapacity: number;
   staffCount: number;
@@ -67,4 +69,64 @@ export interface CountryMetrics {
   totalRevenue: Price;
   averageRevenuePerLocation: Price;
   totalSales: number;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  country: Country;
+  orderHistory: string[];
+  preferences: string[];
+  loyaltyPoints: number;
+}
+
+export interface Supplier {
+  id: string;
+  name: string;
+  country: Country;
+  ingredientIds: string[];
+  priceHistory: { ingredientId: string; price: Price; effectiveDate: Date }[];
+}
+
+export interface Employee {
+  id: string;
+  name: string;
+  country: Country;
+  locationId: string;
+  role: string;
+  contractStartDate: Date;
+  contractEndDate?: Date;
+  absences: { startDate: Date; endDate: Date; type: string }[];
+}
+
+export interface Ingredient {
+  id: string;
+  name: string;
+  unit: string;
+  supplierIds: string[];
+}
+
+export interface StockRecord {
+  id: string;
+  locationId: string;
+  ingredientId: string;
+  quantity: number;
+  updatedAt: Date;
+}
+
+export interface Recipe {
+  id: string;
+  menuItemId: string;
+  name: string;
+  ingredients: { ingredientId: string; quantity: number }[];
+  instructions: string[];
+  language: "es" | "en";
+  updatedAt: Date;
+}
+
+export interface LocationSalesReport {
+  locationId: string;
+  totalSales: number;
+  totalRevenue: Price;
+  averageTicket: Price;
 }

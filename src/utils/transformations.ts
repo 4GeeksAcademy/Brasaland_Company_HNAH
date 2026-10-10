@@ -1,6 +1,7 @@
 import type {
   CountryMetrics,
   Location,
+  LocationSalesReport,
   MenuItem,
   PaymentMethod,
   Price,
@@ -204,4 +205,64 @@ export function calculateCountryComparison(
   };
 
   return { Colombia: createMetrics("Colombia"), USA: createMetrics("USA") };
+}
+
+function calendarDay(date: Date, timeZone: string): number {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone, year: "numeric", month: "2-digit", day: "2-digit",
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part: Intl.DateTimeFormatPart): [string, string] => [part.type, part.value]));
+  return Date.UTC(Number(values.year), Number(values.month) - 1, Number(values.day));
+}
+
+export function calculateWeeklyFloridaSales(
+  sales: SaleTransaction[],
+  locations: Location[],
+  referenceDate: Date,
+): { weekStart: string; totalSales: number; totalRevenue: Price } {
+  const referenceDay = calendarDay(referenceDate, "America/New_York");
+  const daysSinceMonday = (new Date(referenceDay).getUTCDay() + 6) % 7;
+  const weekStart = referenceDay - daysSinceMonday * 86_400_000;
+  const weekEnd = weekStart + 7 * 86_400_000;
+  const floridaIds = new Set(locations.filter((location: Location): boolean => {
+    return location.country === "USA" && (location.state === undefined || ["Florida", "FL"].includes(location.state));
+  }).map((location: Location): string => location.id));
+  const weeklySales = sales.filter((sale: SaleTransaction): boolean => {
+    const day = calendarDay(sale.timestamp, "America/New_York");
+    return floridaIds.has(sale.locationId) && day >= weekStart && day < weekEnd;
+  });
+  return {
+    weekStart: new Date(weekStart).toISOString().slice(0, 10),
+    totalSales: weeklySales.length,
+    totalRevenue: { USD: roundToTwo(sumSalesRevenue(weeklySales, "USD")), COP: roundToTwo(sumSalesRevenue(weeklySales, "COP")) },
+  };
+}
+
+export function calculateLocationSalesTotals(sales: SaleTransaction[], locations: Location[]): LocationSalesReport[] {
+  return locations.map((location: Location): LocationSalesReport => {
+    const locationSales = sales.filter((sale: SaleTransaction): boolean => sale.locationId === location.id);
+    return {
+      locationId: location.id,
+      totalSales: locationSales.length,
+      totalRevenue: { USD: roundToTwo(sumSalesRevenue(locationSales, "USD")), COP: roundToTwo(sumSalesRevenue(locationSales, "COP")) },
+      averageTicket: { USD: calculateAverageTicket(locationSales, "USD"), COP: calculateAverageTicket(locationSales, "COP") },
+    };
+  });
+}
+
+export function findHighestMonthlyTicket(
+  sales: SaleTransaction[],
+  locations: Location[],
+  referenceDate: Date,
+  currency: keyof Price,
+): LocationSalesReport | undefined {
+  const monthlyReports = locations.flatMap((location: Location): LocationSalesReport[] => {
+    const timeZone = location.country === "USA" ? "America/New_York" : "America/Bogota";
+    const month = new Date(calendarDay(referenceDate, timeZone)).toISOString().slice(0, 7);
+    const monthlySales = sales.filter((sale: SaleTransaction): boolean => {
+      return sale.locationId === location.id && new Date(calendarDay(sale.timestamp, timeZone)).toISOString().slice(0, 7) === month;
+    });
+    return monthlySales.length === 0 ? [] : calculateLocationSalesTotals(monthlySales, [location]);
+  });
+  return maxBy(monthlyReports, (report: LocationSalesReport): number => report.averageTicket[currency]);
 }
