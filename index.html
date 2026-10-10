@@ -80,6 +80,7 @@
             <li><a data-i18n="navMenu" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#menu">Menú</a></li>
             <li><a data-i18n="navBrasaPoints" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#brasa-points">Brasa Points</a></li>
             <li><a data-i18n="navContacto" class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#contacto">Contacto</a></li>
+            <li><a class="nav-link block rounded-md px-3 py-2 text-base font-medium text-stone-200 hover:bg-brasa-600/20 hover:text-brasa-100 focus:outline-none focus:ring-2 focus:ring-brasa-500" href="#operaciones">Operaciones</a></li>
             <li class="pt-2 md:hidden">
               <fieldset class="inline-flex items-center gap-1 rounded-full border border-brasa-700/60 p-1" aria-label="Selector de idioma móvil">
                 <legend class="sr-only">Idioma</legend>
@@ -219,6 +220,81 @@
           </p>
         </address>
       </section>
+      <section id="operaciones" class="mx-auto w-full max-w-7xl scroll-mt-28 border-t border-stone-700 px-4 py-12 md:px-8" aria-labelledby="operations-heading">
+        <div class="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 id="operations-heading" class="font-display text-2xl text-brasa-100">Operaciones de Brasaland</h2>
+          <p class="text-sm text-stone-400">Datos ficticios</p>
+        </div>
+        <div class="mt-8 grid grid-cols-1 items-stretch gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-4">
+          <form id="filter-form" class="flex min-w-0 flex-col gap-4">
+            <h3 class="h-7 text-lg font-semibold">Menú</h3>
+            <div>
+              <label class="mb-1.5 block text-base" for="filter-category">Categoría</label>
+              <select id="filter-category" class="ops-control"><option value="All">Todas</option><option value="Meat">Carnes</option><option value="Side">Acompañamientos</option><option value="Beverage">Bebidas</option><option value="Dessert">Postres</option><option value="Combo">Combos</option></select>
+            </div>
+            <div class="mt-auto pt-2">
+              <button class="ops-command" type="submit">Filtrar</button>
+            </div>
+          </form>
+          <form id="search-form" class="flex min-w-0 flex-col gap-4">
+            <h3 class="h-7 text-lg font-semibold">Sedes</h3>
+            <div>
+              <label class="mb-1.5 block text-base" for="search-mode">Búsqueda</label>
+              <select id="search-mode" class="ops-control"><option value="linear">Lineal · ID de sede</option><option value="binary">Binaria · Capacidad</option></select>
+            </div>
+            <div>
+              <label id="search-label" class="mb-1.5 block text-base" for="search-query">ID de sede</label>
+              <input id="search-query" class="ops-control" value="LOC-MIAMI" required>
+            </div>
+            <div class="mt-auto pt-2">
+              <button class="ops-command" type="submit">Buscar</button>
+            </div>
+          </form>
+          <form id="sort-form" class="flex min-w-0 flex-col gap-4">
+            <h3 class="h-7 text-lg font-semibold">Orden</h3>
+            <div>
+              <label class="mb-1.5 block text-base" for="sort-direction">Capacidad</label>
+              <select id="sort-direction" class="ops-control"><option value="asc">Ascendente</option><option value="desc">Descendente</option></select>
+            </div>
+            <div>
+              <label class="mb-1.5 block text-base" for="sort-secondary">Desempate por nombre</label>
+              <select id="sort-secondary" class="ops-control"><option value="asc">A → Z</option><option value="desc">Z → A</option></select>
+            </div>
+            <div class="mt-auto pt-2">
+              <button class="ops-command" type="submit">Ordenar</button>
+            </div>
+          </form>
+          <form id="report-form" class="flex min-w-0 flex-col gap-4">
+            <h3 class="h-7 text-lg font-semibold">Reportes</h3>
+            <div>
+              <label class="mb-1.5 block text-base" for="report-kind">Reporte</label>
+              <select id="report-kind" class="ops-control"><option value="totals">Totales por sede</option><option value="florida">Semana de Florida</option><option value="ticket">Mayor ticket mensual</option><option value="categories">Conteo por categoría</option><option value="summary">Resumen de precios</option></select>
+            </div>
+            <div>
+              <label class="mb-1.5 block text-base" for="report-date">Fecha de referencia</label>
+              <input id="report-date" class="ops-control" type="date" value="2026-10-10" required>
+            </div>
+            <div>
+              <label class="mb-1.5 block text-base" for="report-currency">Moneda del ticket / precios</label>
+              <select id="report-currency" class="ops-control"><option value="USD">USD</option><option value="COP">COP</option></select>
+            </div>
+            <div class="mt-auto pt-2">
+              <button class="ops-command" type="submit">Generar reporte</button>
+            </div>
+          </form>
+        </div>
+        <div class="mt-8 border-t border-stone-700 pt-6">
+          <h3 id="result-title" class="text-xl font-semibold">Totales por sede</h3>
+          <p id="result-status" role="status" aria-live="polite" class="mt-2 min-h-6 text-stone-300"></p>
+          <div class="mt-4 max-w-full overflow-x-auto">
+            <table id="result-table" class="w-full text-left text-sm">
+              <caption class="sr-only">Resultados de operaciones</caption>
+              <thead id="result-head" class="border-b border-stone-600 text-stone-400"></thead>
+              <tbody id="result-body" class="divide-y divide-stone-800"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="border-t border-brasa-700/40 bg-stone-950">
@@ -237,6 +313,7 @@
       </section>
     </footer>
 
+    <script type="module" src="./dist/app.js"></script>
     <script>
       const menuToggleButton = document.getElementById("menu-toggle");
       const mainMenu = document.getElementById("menu-principal");
