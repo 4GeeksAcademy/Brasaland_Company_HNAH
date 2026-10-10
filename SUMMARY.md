@@ -10,7 +10,7 @@
 
 ## Implementation notes
 
-Financial calculations accept an explicit USD or COP selector and round calculated amounts and percentages to two decimals. Sorting creates copied arrays before ordering. Location performance protects against zero revenue and uses at least one operating day for valid scoring of recently opened locations.
+Financial calculations accept an explicit USD or COP selector and round calculated amounts and percentages to two decimals. Sorting creates copied arrays before ordering, including stable multicolumn sorting. Temporal calculations receive a reference date and use explicit IANA timezones. Unknown-input validators reject partial/null values and nonfinite numbers. Additional models cover customers, suppliers, employees, ingredients, stock and recipes; reports cover Florida weeks, monthly average tickets and per-location COP/USD totals. Both READMEs distinguish context needs from schema and validation assumptions.
 
 ## Validation
 
@@ -18,4 +18,9 @@ Run:
 
 ```bash
 npm run typecheck
+npm run build
+npm run demo
+npx http-server . -p 3000 -a 0.0.0.0
 ```
+
+The demo runs 47 assertion-based cases. Open `http://localhost:3000/#operaciones` for filters, both search methods, multicolumn sorting and reports. Generated ES modules are built into `dist`; GitHub Pages runs the full build before deployment.
