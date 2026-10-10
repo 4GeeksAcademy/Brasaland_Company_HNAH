@@ -51,6 +51,32 @@
 @tailwind utilities;
 
 @layer components {
+	:is(#brasa-form, #operaciones) :where(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]), select, textarea) {
+		color: #fff7ea !important;
+		-webkit-text-fill-color: #fff7ea !important;
+		background-color: #0c0a09 !important;
+		caret-color: #fb923c;
+		color-scheme: dark;
+	}
+	:is(#brasa-form, #operaciones) :where(input, textarea)::placeholder {
+		color: #a8a29e !important;
+		-webkit-text-fill-color: #a8a29e !important;
+		opacity: 1;
+	}
+	:is(#brasa-form, #operaciones) option {
+		color: #fff7ea;
+		background-color: #0c0a09;
+	}
+	:is(#brasa-form, #operaciones) :where(input, select, textarea):-webkit-autofill {
+		-webkit-text-fill-color: #fff7ea !important;
+		caret-color: #fb923c;
+		-webkit-box-shadow: 0 0 0 1000px #0c0a09 inset;
+		box-shadow: 0 0 0 1000px #0c0a09 inset;
+	}
+	:is(#brasa-form, #operaciones) :where(input, select, textarea):-webkit-autofill:focus {
+		-webkit-box-shadow: 0 0 0 1000px #0c0a09 inset, 0 0 0 2px #fb923c;
+		box-shadow: 0 0 0 1000px #0c0a09 inset, 0 0 0 2px #fb923c;
+	}
 	.ops-control {
 		@apply min-h-11 w-full min-w-0 rounded-md border border-stone-600 bg-stone-950 px-3 py-2 text-base text-stone-100 focus:outline-none focus:ring-2 focus:ring-brasa-400;
 	}
