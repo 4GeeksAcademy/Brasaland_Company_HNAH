@@ -14,7 +14,7 @@ _These instructions are also available in [English](./README.md)._
 El landing, el formulario Brasa Points y la interfaz de operaciones se encuentran en la raíz del proyecto. Requiere Node.js 20 o superior. Para compilar, validar y probar:
 
 ```bash
-npm ci
+npm install
 npm run typecheck
 npm run build
 npm run demo
@@ -35,9 +35,9 @@ Esta copia del repositorio no incluye Docker Compose, una API ni un dashboard St
 src/
 	app.ts                   Controles y resultados en el navegador
 	sample-data.ts           Datos ficticios compartidos
-	demo.ts                  47 casos de prueba con aserciones
+	demo.ts                  60 casos de prueba con aserciones
 	types/models.ts          Interfaces del dominio y reportes
-	utils/collections.ts     Filtros y ordenamiento
+	utils/collections.ts     Filtros, agrupación y ordenamiento
 	utils/search.ts          Búsquedas lineal y binaria
 	utils/transformations.ts Agregaciones y reportes
 	utils/validations.ts     Validadores de entradas unknown
@@ -45,6 +45,18 @@ dist/                      Módulos ES y CSS generados
 ```
 
 Los JS generados se excluyen de Git; se conserva el CSS ya versionado. El demo falla si una aserción no se cumple y verifica listas vacías, un elemento, ausencias, duplicados, entradas parciales/nulas, números no finitos, límites temporales y no mutación.
+
+| Comando             | Resultado                                                                                    |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| `npm install`       | Instala dependencias; `npm ci` permite reinstalar desde el lockfile                          |
+| `npm run typecheck` | Ejecuta `tsc --noEmit` con `strict: true`                                                    |
+| `npm run build`     | Compila TypeScript como módulos ES en `dist` y después genera `dist/styles.css` con Tailwind |
+| `npm run build:css` | Genera solo el CSS; no compila TypeScript                                                    |
+| `npm run demo`      | Ejecuta los 60 casos con `tsx`; falla si no se cumple una aserción                           |
+
+Las reglas de datos de negocio TypeScript viven en [src/utils/validations.ts](src/utils/validations.ts). Los validadores aceptan `unknown` y retornan `{ valid, errors }`. Las validaciones de registro Brasa Points en [validation.js](validation.js) se mantienen independientes y sin cambios; sus requisitos de edad, email, teléfono y consentimiento no se trasladan a los modelos de negocio.
+
+El [informe de contraste y verificación](docs/verificacion-contraste-hito.md) contiene la tabla de los diez puntos, resultados y capturas antes/después. Los controles de ambos formularios comparten estilos en [styles.css](styles.css): fondo oscuro, texto claro, autofill, opciones y estados de foco/error/deshabilitado. Se debe reconstruir con `npm run build` y recargar sin caché tras cambios de CSS; el archivo generado [dist/styles.css](dist/styles.css) sigue versionado.
 
 El [borrador de descripción del PR](docs/pr-description.md) incluye las funcionalidades, desafíos y capturas verificadas. Las imágenes están en [docs/screenshots](docs/screenshots).
 
@@ -69,6 +81,8 @@ El contexto describe necesidades, no un esquema literal. Los siguientes campos s
 - Una sede USA sin `state` se considera Florida según el alcance actual del contexto; otras sedes deben indicar el estado. La fecha elegida en la interfaz se convierte a las 12:00 UTC para conservar ese día en ambos mercados.
 - Cada `SaleTransaction` cuenta como un ticket; no se agrupan pedidos. Los totales suman los importes COP y USD proporcionados. La conversión fija heredada de 1 USD = 4000 COP es un supuesto, no una tasa actual.
 - Se comprueban campos requeridos por las interfaces, tipos, enums, números finitos y fechas válidas. Precios/cantidades/capacidad/personal/costes positivos, preparación de hasta 60 minutos, disponibilidad en un país y apertura desde 2008 hasta el año de referencia son restricciones heredadas, no reglas literales del contexto. El coste de ingredientes puede ser cero. No se prohíben ventas futuras ni cantidades fraccionarias.
+- Supuestos de los nuevos validadores: puntos de fidelización, stock, cantidades de receta/desperdicio y precios de proveedores/costes de desperdicio deben ser finitos y no negativos; se permite cero. Contratos y ausencias permiten inicio igual al fin, pero no fin anterior al inicio. Arrays vacíos son válidos; las entradas presentes deben tener los tipos de la interfaz. No se impone edad del cliente, unidades de medida, fórmula de puntos, máximos numéricos, orden del histórico de precios ni restricciones laborales. Las referencias por ID no se resuelven contra una base de datos; esta comprobación corresponde al consumidor.
+- `groupBy(items, selector)` en `collections.ts` devuelve un `Map` de claves a arrays nuevos; una lista vacía produce un `Map` vacío. Las claves pueden ser strings, números o valores nulos y no colisionan con propiedades como `__proto__`. Los elementos agrupados conservan su referencia, sin mutar las entradas.
 - Total genérico vacío: `0`; promedio, máximo y mínimo vacíos: `undefined`. Los extremos devuelven el elemento, manteniendo el primero en empates. Orden multicampo estable, texto lexicográfico y nulos al final en ascendente/al principio en descendente.
 - Los márgenes financieros pueden ser negativos. Solo el componente de margen del puntaje se limita a 0-10; sus pesos y el 1 de enero como fecha de apertura son supuestos heredados. Capacidad cero aporta eficiencia cero.
 - Estas entidades no implementan una API, un CRM completo, predicción de stock, reglas laborales ni envío automático de informes los lunes a las 07:00. El alcance es modelado, utilidades y reportes locales.

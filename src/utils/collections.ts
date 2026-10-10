@@ -1,5 +1,15 @@
 import type { Location, MenuCategory, MenuItem, SaleTransaction } from "../types/models";
 
+export function groupBy<T, Key>(items: readonly T[], selector: (item: T) => Key): Map<Key, T[]> {
+  return items.reduce((groups: Map<Key, T[]>, item: T): Map<Key, T[]> => {
+    const key = selector(item);
+    const group = groups.get(key);
+    if (group) group.push(item);
+    else groups.set(key, [item]);
+    return groups;
+  }, new Map<Key, T[]>());
+}
+
 function compareValues(first: unknown, second: unknown): number {
   if (Object.is(first, second)) return 0;
   const firstMissing = first === null || first === undefined;

@@ -3,10 +3,10 @@
 ## Implemented functionality
 
 - `src/types/models.ts`: typed business entities for prices, menu items, sales, locations, waste records, and country metrics.
-- `src/utils/collections.ts`: sales and menu/location filtering plus non-mutating capacity and price sorting.
+- `src/utils/collections.ts`: sales and menu/location filtering, generic Map grouping and non-mutating capacity, price and multicolumn sorting.
 - `src/utils/search.ts`: linear location and case-insensitive menu searches, plus binary location-capacity search.
 - `src/utils/transformations.ts`: revenue, margin, waste, currency conversion, performance scores, ranking, payment counts, average tickets, top sellers, waste grouping, and country comparisons.
-- `src/utils/validations.ts`: business-rule validation for menu items, sale transactions, and locations.
+- `src/utils/validations.ts`: unknown-input validation for menu items, sale transactions, locations, customers, suppliers, employees, ingredients, stock, recipes and waste records, with documented numeric and date assumptions.
 
 ## Implementation notes
 
@@ -23,4 +23,4 @@ npm run demo
 npx http-server . -p 3000 -a 0.0.0.0
 ```
 
-The demo runs 47 assertion-based cases. Open `http://localhost:3000/#operaciones` for filters, both search methods, multicolumn sorting and reports. Generated ES modules are built into `dist`; GitHub Pages runs the full build before deployment.
+The demo runs 60 assertion-based cases. Open `http://localhost:3000/#operaciones` for filters, both search methods, multicolumn sorting and reports. Generated ES modules are built into `dist`; GitHub Pages runs the full build before deployment. The shared dark field/button styles and milestone checklist are documented in `docs/verificacion-contraste-hito.md`; Brasa Points JavaScript validation remains unchanged.

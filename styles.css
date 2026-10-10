@@ -51,10 +51,94 @@
 @tailwind utilities;
 
 @layer components {
-	.ops-control {
-		@apply min-h-11 w-full min-w-0 rounded-md border border-stone-600 bg-stone-950 px-3 py-2 text-base text-stone-100 focus:outline-none focus:ring-2 focus:ring-brasa-400;
+	.form-control,
+	:is(#brasa-form, #operaciones) :where(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]), select, textarea) {
+		@apply min-h-11 w-full min-w-0 rounded-md border border-stone-600 bg-stone-950 px-3 py-3 text-base text-stone-100;
+		color-scheme: dark;
+		-webkit-text-fill-color: currentColor;
 	}
-	.ops-command {
-		@apply min-h-11 w-full rounded-md bg-brasa-700 px-4 py-2 text-base font-semibold text-white hover:bg-brasa-600 focus:outline-none focus:ring-2 focus:ring-brasa-300;
+	.form-control::placeholder,
+	:is(#brasa-form, #operaciones) :where(input, textarea)::placeholder {
+		@apply text-stone-400;
+		opacity: 1;
+	}
+	.form-control:focus,
+	:is(#brasa-form, #operaciones) :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus {
+		@apply border-brasa-400 outline-none ring-2 ring-brasa-400 ring-offset-2 ring-offset-stone-950;
+	}
+	.form-control:disabled,
+	:is(#brasa-form, #operaciones) :where(input, select, textarea):disabled {
+		@apply cursor-not-allowed border-stone-700 bg-stone-900 text-stone-400;
+		opacity: 1;
+	}
+	.form-control option,
+	:is(#brasa-form, #operaciones) option {
+		@apply bg-stone-950 text-stone-100;
+	}
+	.form-control:-webkit-autofill,
+	:is(#brasa-form, #operaciones) :where(input, select, textarea):-webkit-autofill {
+		-webkit-text-fill-color: #f5f5f4;
+		caret-color: #f5f5f4;
+		-webkit-box-shadow: 0 0 0 1000px #0c0a09 inset;
+		box-shadow: 0 0 0 1000px #0c0a09 inset;
+	}
+	.form-control:-webkit-autofill:focus,
+	:is(#brasa-form, #operaciones) :where(input, select, textarea):-webkit-autofill:focus {
+		-webkit-box-shadow: 0 0 0 1000px #0c0a09 inset, 0 0 0 2px #fb923c;
+		box-shadow: 0 0 0 1000px #0c0a09 inset, 0 0 0 2px #fb923c;
+	}
+	:is(#brasa-form, #operaciones) input::-webkit-calendar-picker-indicator {
+		opacity: 1;
+		cursor: pointer;
+	}
+	#brasa-form :where(input, select, textarea)[aria-invalid="true"] {
+		@apply border-red-300;
+	}
+	#brasa-form [role="alert"] {
+		@apply text-red-300;
+	}
+	#brasa-form :where(input[type="checkbox"], input[type="radio"]) {
+		color-scheme: dark;
+		accent-color: #c2410c;
+	}
+	.ops-control {
+		@apply min-h-11 w-full min-w-0;
+	}
+	.ops-panel {
+		@apply flex min-w-0 flex-col gap-4 border-t border-stone-700 pt-6;
+	}
+	.ops-panel label {
+		@apply mb-2 block text-base text-stone-200;
+	}
+	.ops-panel > button {
+		@apply mt-auto;
+	}
+	#operaciones .ops-command,
+	#brasa-form .form-command {
+		@apply inline-flex min-h-11 items-center justify-center rounded-md border border-brasa-600 bg-brasa-700 px-4 py-3 text-base font-semibold text-white;
+	}
+	#operaciones .ops-command {
+		@apply w-full;
+	}
+	#operaciones .ops-command:hover:not(:disabled),
+	#brasa-form .form-command:hover:not(:disabled) {
+		@apply bg-brasa-800;
+	}
+	#operaciones .ops-command-secondary,
+	#brasa-form .form-command-secondary {
+		@apply border-stone-500 bg-stone-900 text-stone-100;
+	}
+	#operaciones .ops-command-secondary:hover:not(:disabled),
+	#brasa-form .form-command-secondary:hover:not(:disabled) {
+		@apply bg-stone-800;
+	}
+	#operaciones .ops-command:focus-visible,
+	#brasa-form .form-command:focus-visible {
+		@apply outline-none ring-2 ring-brasa-400 ring-offset-2 ring-offset-stone-950;
+	}
+	#operaciones .ops-command:disabled,
+	#brasa-form .form-command:disabled {
+		@apply cursor-not-allowed border-stone-600 bg-stone-800 text-stone-400;
+		opacity: 1;
 	}
 }

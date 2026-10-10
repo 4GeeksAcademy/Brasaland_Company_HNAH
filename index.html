@@ -225,37 +225,53 @@
           <h2 id="operations-heading" class="font-display text-2xl text-brasa-100">Operaciones de Brasaland</h2>
           <p class="text-sm text-stone-400">Datos ficticios</p>
         </div>
-        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <form id="filter-form" class="space-y-3">
+        <div class="mt-8 grid items-stretch gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+          <form id="filter-form" class="ops-panel">
             <h3 class="text-lg font-semibold">Menú</h3>
-            <label class="block" for="filter-category">Categoría</label>
-            <select id="filter-category" class="ops-control"><option value="All">Todas</option><option value="Meat">Carnes</option><option value="Side">Acompañamientos</option><option value="Beverage">Bebidas</option><option value="Dessert">Postres</option><option value="Combo">Combos</option></select>
+            <div>
+              <label for="filter-category">Categoría</label>
+              <select id="filter-category" class="ops-control"><option value="All">Todas</option><option value="Meat">Carnes</option><option value="Side">Acompañamientos</option><option value="Beverage">Bebidas</option><option value="Dessert">Postres</option><option value="Combo">Combos</option></select>
+            </div>
             <button class="ops-command" type="submit">Filtrar</button>
           </form>
-          <form id="search-form" class="space-y-3">
+          <form id="search-form" class="ops-panel">
             <h3 class="text-lg font-semibold">Sedes</h3>
-            <label class="block" for="search-mode">Búsqueda</label>
-            <select id="search-mode" class="ops-control"><option value="linear">Lineal · ID de sede</option><option value="binary">Binaria · Capacidad</option></select>
-            <label id="search-label" class="block" for="search-query">ID de sede</label>
-            <input id="search-query" class="ops-control" value="LOC-MIAMI" required>
+            <div>
+              <label for="search-mode">Búsqueda</label>
+              <select id="search-mode" class="ops-control"><option value="linear">Lineal · ID de sede</option><option value="binary">Binaria · Capacidad</option></select>
+            </div>
+            <div>
+              <label id="search-label" for="search-query">ID de sede</label>
+              <input id="search-query" class="ops-control" value="LOC-MIAMI" required>
+            </div>
             <button class="ops-command" type="submit">Buscar</button>
           </form>
-          <form id="sort-form" class="space-y-3">
+          <form id="sort-form" class="ops-panel">
             <h3 class="text-lg font-semibold">Orden</h3>
-            <label class="block" for="sort-direction">Capacidad</label>
-            <select id="sort-direction" class="ops-control"><option value="asc">Ascendente</option><option value="desc">Descendente</option></select>
-            <label class="block" for="sort-secondary">Desempate por nombre</label>
-            <select id="sort-secondary" class="ops-control"><option value="asc">A → Z</option><option value="desc">Z → A</option></select>
-            <button class="ops-command" type="submit">Ordenar</button>
+            <div>
+              <label for="sort-direction">Capacidad</label>
+              <select id="sort-direction" class="ops-control"><option value="asc">Ascendente</option><option value="desc">Descendente</option></select>
+            </div>
+            <div>
+              <label for="sort-secondary">Desempate por nombre</label>
+              <select id="sort-secondary" class="ops-control"><option value="asc">A → Z</option><option value="desc">Z → A</option></select>
+            </div>
+            <button class="ops-command ops-command-secondary" type="submit">Ordenar</button>
           </form>
-          <form id="report-form" class="space-y-3">
+          <form id="report-form" class="ops-panel">
             <h3 class="text-lg font-semibold">Reportes</h3>
-            <label class="block" for="report-kind">Reporte</label>
-            <select id="report-kind" class="ops-control"><option value="totals">Totales por sede</option><option value="florida">Semana de Florida</option><option value="ticket">Mayor ticket mensual</option><option value="categories">Conteo por categoría</option><option value="summary">Resumen de precios</option></select>
-            <label class="block" for="report-date">Fecha de referencia</label>
-            <input id="report-date" class="ops-control" type="date" value="2026-10-10" required>
-            <label class="block" for="report-currency">Moneda del ticket / precios</label>
-            <select id="report-currency" class="ops-control"><option value="USD">USD</option><option value="COP">COP</option></select>
+            <div>
+              <label for="report-kind">Reporte</label>
+              <select id="report-kind" class="ops-control"><option value="totals">Totales por sede</option><option value="florida">Semana de Florida</option><option value="ticket">Mayor ticket mensual</option><option value="categories">Conteo por categoría</option><option value="summary">Resumen de precios</option></select>
+            </div>
+            <div>
+              <label for="report-date">Fecha de referencia</label>
+              <input id="report-date" class="ops-control" type="date" value="2026-10-10" required>
+            </div>
+            <div>
+              <label for="report-currency">Moneda del ticket / precios</label>
+              <select id="report-currency" class="ops-control"><option value="USD">USD</option><option value="COP">COP</option></select>
+            </div>
             <button class="ops-command" type="submit">Generar reporte</button>
           </form>
         </div>
