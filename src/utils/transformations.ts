@@ -12,6 +12,35 @@ import type {
 const CURRENCIES = ["USD", "COP"] as const;
 const PAYMENT_METHODS: PaymentMethod[] = ["Cash", "Credit card", "Debit card", "Digital wallet"];
 
+export function countByCategory<T>(items: readonly T[], selector: (item: T) => string): Record<string, number> {
+  const counts = items.reduce((result: Map<string, number>, item: T): Map<string, number> => {
+    const category = selector(item);
+    result.set(category, (result.get(category) ?? 0) + 1);
+    return result;
+  }, new Map<string, number>());
+  return Object.fromEntries(counts);
+}
+
+export function sumBy<T>(items: readonly T[], selector: (item: T) => number): number {
+  return items.reduce((total: number, item: T): number => total + selector(item), 0);
+}
+
+export function averageBy<T>(items: readonly T[], selector: (item: T) => number): number | undefined {
+  return items.length === 0 ? undefined : sumBy(items, selector) / items.length;
+}
+
+export function maxBy<T>(items: readonly T[], selector: (item: T) => number): T | undefined {
+  return items.reduce((maximum: T | undefined, item: T): T => {
+    return maximum === undefined || selector(item) > selector(maximum) ? item : maximum;
+  }, undefined as T | undefined);
+}
+
+export function minBy<T>(items: readonly T[], selector: (item: T) => number): T | undefined {
+  return items.reduce((minimum: T | undefined, item: T): T => {
+    return minimum === undefined || selector(item) < selector(minimum) ? item : minimum;
+  }, undefined as T | undefined);
+}
+
 function roundToTwo(value: number): number {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
