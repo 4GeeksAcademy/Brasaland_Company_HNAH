@@ -35,6 +35,8 @@ export default async function CandidateDetailPage({
 }: CandidateDetailPageProps) {
   const [routeParams, query] = await Promise.all([params, searchParams]);
   const from = getReturnTo(query.from);
+  const notice =
+    query.created === "1" ? "created" : query.updated === "1" ? "updated" : null;
 
-  return <CandidateDetail id={routeParams.id} returnTo={from} />;
+  return <CandidateDetail id={routeParams.id} returnTo={from} notice={notice} />;
 }

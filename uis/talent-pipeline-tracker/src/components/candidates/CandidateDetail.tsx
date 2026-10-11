@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { StatusStageControls } from "@/components/candidates/StatusStageControls";
 import { StageBadge } from "@/components/candidates/StageBadge";
 import { StatusBadge } from "@/components/candidates/StatusBadge";
 import { NotesSection } from "@/components/notes/NotesSection";
+import { Alert } from "@/components/ui/Alert";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingState } from "@/components/ui/LoadingState";
 import { formatDate, formatExperience } from "@/lib/format";
@@ -14,13 +17,41 @@ import type { ReactNode } from "react";
 interface CandidateDetailProps {
   id: string;
   returnTo: string;
+  notice?: "created" | "updated" | null;
 }
 
 const backLinkClassName =
   "inline-flex min-h-10 items-center rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-foreground hover:bg-brasa-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-600";
 
-export function CandidateDetail({ id, returnTo }: CandidateDetailProps) {
+export function CandidateDetail({ id, returnTo, notice }: CandidateDetailProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [noticeState, setNoticeState] = useState<{
+    id: string;
+    notice: CandidateDetailProps["notice"];
+  }>({ id, notice: notice ?? null });
+  if (noticeState.id !== id) {
+    setNoticeState({ id, notice: notice ?? null });
+  } else if (notice && noticeState.notice !== notice) {
+    setNoticeState({ id, notice });
+  }
+  const activeNotice = noticeState.id === id ? noticeState.notice : notice ?? null;
+  const successMessage =
+    activeNotice === "created"
+      ? "Candidatura creada correctamente."
+      : activeNotice === "updated"
+        ? "Candidatura actualizada correctamente."
+        : null;
   const { candidate, loading, error, refetch, setCandidate } = useCandidate(id);
+
+  useEffect(() => {
+    if (!notice) return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("created");
+    url.searchParams.delete("updated");
+    router.replace(`${pathname}${url.search}`, { scroll: false });
+  }, [notice, pathname, router]);
 
   if (loading) {
     return (
@@ -82,6 +113,12 @@ export function CandidateDetail({ id, returnTo }: CandidateDetailProps) {
         </h1>
         <p className="mt-2 text-muted">{candidate.position}</p>
       </header>
+
+      {successMessage ? (
+        <div className="mt-6">
+          <Alert variant="success" message={successMessage} />
+        </div>
+      ) : null}
 
       <section className="border-b border-line py-6" aria-label="Estado de la candidatura">
         <h2 className="mb-4 text-base font-semibold text-foreground">
