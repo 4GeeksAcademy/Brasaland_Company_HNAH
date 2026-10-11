@@ -4,6 +4,7 @@ import Link from "next/link";
 import { StatusStageControls } from "@/components/candidates/StatusStageControls";
 import { StageBadge } from "@/components/candidates/StageBadge";
 import { StatusBadge } from "@/components/candidates/StatusBadge";
+import { NotesSection } from "@/components/notes/NotesSection";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingState } from "@/components/ui/LoadingState";
 import { formatDate, formatExperience } from "@/lib/format";
@@ -134,6 +135,17 @@ export function CandidateDetail({ id, returnTo }: CandidateDetailProps) {
           value={`${candidate.notes_count} ${candidate.notes_count === 1 ? "nota" : "notas"}`}
         />
       </dl>
+
+      <NotesSection
+        candidateId={candidate.id}
+        onCountChange={(delta) =>
+          setCandidate((current) =>
+            current
+              ? { ...current, notes_count: Math.max(0, current.notes_count + delta) }
+              : current,
+          )
+        }
+      />
     </main>
   );
 }
