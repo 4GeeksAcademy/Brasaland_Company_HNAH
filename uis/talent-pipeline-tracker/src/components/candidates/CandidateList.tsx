@@ -8,9 +8,10 @@ import { CandidateRow } from "@/components/candidates/CandidateRow";
 
 interface CandidateListProps {
   candidates: Candidate[];
+  returnTo: string;
 }
 
-export function CandidateList({ candidates }: CandidateListProps) {
+export function CandidateList({ candidates, returnTo }: CandidateListProps) {
   return (
     <>
       <div className="hidden overflow-x-auto border-y border-line bg-surface md:block">
@@ -24,7 +25,7 @@ export function CandidateList({ candidates }: CandidateListProps) {
           </thead>
           <tbody>
             {candidates.map((candidate) => (
-              <CandidateRow key={candidate.id} candidate={candidate} />
+              <CandidateRow key={candidate.id} candidate={candidate} returnTo={returnTo} />
             ))}
           </tbody>
         </table>
@@ -32,7 +33,8 @@ export function CandidateList({ candidates }: CandidateListProps) {
 
       <ul className="space-y-3 md:hidden">
         {candidates.map((candidate) => {
-          const href = `/candidates/${encodeURIComponent(candidate.id)}`;
+          const returnParams = new URLSearchParams({ from: returnTo });
+          const href = `/candidates/${encodeURIComponent(candidate.id)}?${returnParams.toString()}`;
           const accessibleLabel = `${candidate.full_name}, ${candidate.position}, estado actual ${STATUS_LABELS[candidate.status]}, etapa actual ${STAGE_LABELS[candidate.stage]}`;
 
           return (

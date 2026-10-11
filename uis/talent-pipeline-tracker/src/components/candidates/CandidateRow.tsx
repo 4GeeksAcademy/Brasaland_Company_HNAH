@@ -7,10 +7,12 @@ import { StatusBadge } from "@/components/candidates/StatusBadge";
 
 interface CandidateRowProps {
   candidate: Candidate;
+  returnTo: string;
 }
 
-export function CandidateRow({ candidate }: CandidateRowProps) {
-  const href = `/candidates/${encodeURIComponent(candidate.id)}`;
+export function CandidateRow({ candidate, returnTo }: CandidateRowProps) {
+  const returnParams = new URLSearchParams({ from: returnTo });
+  const href = `/candidates/${encodeURIComponent(candidate.id)}?${returnParams.toString()}`;
   const accessibleLabel = `${candidate.full_name}, ${candidate.position}, estado actual ${STATUS_LABELS[candidate.status]}, etapa actual ${STAGE_LABELS[candidate.stage]}`;
 
   return (

@@ -52,6 +52,8 @@ export function CandidateListing() {
 
   const hasActiveFilters = Boolean(status || stage || search);
   const hasCandidates = candidates.length > 0;
+  const query = searchParams.toString();
+  const returnTo = query ? `/?${query}` : "/";
 
   return (
     <main className="mx-auto w-full max-w-6xl px-5 py-10 sm:py-14">
@@ -100,7 +102,7 @@ export function CandidateListing() {
         ) : null}
         {hasCandidates ? (
           <div className={loading ? "opacity-60 transition-opacity" : "transition-opacity"}>
-            <CandidateList candidates={candidates} />
+            <CandidateList candidates={candidates} returnTo={returnTo} />
           </div>
         ) : null}
       </section>

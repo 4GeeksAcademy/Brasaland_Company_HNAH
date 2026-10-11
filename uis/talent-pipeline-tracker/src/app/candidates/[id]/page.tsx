@@ -1,28 +1,40 @@
-import Link from "next/link";
+import { CandidateDetail } from "@/components/candidates/CandidateDetail";
 
 export const instant = false;
+
+interface CandidateDetailPageProps {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+function getReturnTo(value: string | string[] | undefined): string {
+  if (value === "/") return "/";
+  if (
+    typeof value !== "string" ||
+    !value.startsWith("/?") ||
+    value.startsWith("//") ||
+    value.includes("\\")
+  ) {
+    return "/";
+  }
+
+  try {
+    const url = new URL(value, "https://talent-pipeline.local");
+    return url.origin === "https://talent-pipeline.local" && url.pathname === "/"
+      ? `${url.pathname}${url.search}`
+      : "/";
+  } catch {
+    return "/";
+  }
+}
 
 // En Next.js 16, params es una promesa en Server Components y se resuelve con await.
 export default async function CandidateDetailPage({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+  searchParams,
+}: CandidateDetailPageProps) {
+  const [routeParams, query] = await Promise.all([params, searchParams]);
+  const from = getReturnTo(query.from);
 
-  return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-10 sm:py-14">
-      <p className="text-sm font-semibold text-brasa-700">Talent Pipeline</p>
-      <h1 className="mt-2 font-display text-3xl font-bold text-foreground">
-        Detalle de candidatura {id}
-      </h1>
-      <p className="mt-4 text-muted">El detalle estará disponible más adelante.</p>
-      <Link
-        href="/"
-        className="mt-8 inline-flex min-h-10 items-center rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-foreground hover:bg-brasa-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-600"
-      >
-        Volver al listado
-      </Link>
-    </main>
-  );
+  return <CandidateDetail id={routeParams.id} returnTo={from} />;
 }
