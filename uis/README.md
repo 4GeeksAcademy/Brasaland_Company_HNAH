@@ -13,3 +13,5 @@ Organize `uis/` by **different concerns** — each subfolder covers a distinct a
 - **Recommendation**: document in this file (or in sub-READMEs) the applications you add, their objective, the technology used, and how to run them.
 
 > _Estas instrucciones también están disponibles en [español](./README.es.md)._
+
+- [Talent Pipeline Tracker](./talent-pipeline-tracker/README.md) — herramienta interna de People & Culture en Next.js y TypeScript.

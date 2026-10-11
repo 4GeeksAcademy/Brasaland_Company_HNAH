@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { CANDIDATE_LIST_CHANGED_EVENT } from "@/lib/candidate-list-events";
 import { ApiError } from "@/lib/api-client";
 import { getCandidates } from "@/services/candidates.service";
 import type { Candidate, ListFilters } from "@/types/candidate";
@@ -35,6 +36,11 @@ export function useCandidates(filters: ListFilters): UseCandidatesResult {
   const refetch = useCallback(() => {
     setRequestVersion((version) => version + 1);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener(CANDIDATE_LIST_CHANGED_EVENT, refetch);
+    return () => window.removeEventListener(CANDIDATE_LIST_CHANGED_EVENT, refetch);
+  }, [refetch]);
 
   useEffect(() => {
     const controller = new AbortController();

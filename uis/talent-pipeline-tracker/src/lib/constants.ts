@@ -15,6 +15,14 @@ export const CANDIDATE_STAGES = [
   "offer_presented",
 ] as const satisfies readonly CandidateStage[];
 
+export function isCandidateStatus(value: string | null): value is CandidateStatus {
+  return value !== null && CANDIDATE_STATUSES.some((status) => status === value);
+}
+
+export function isCandidateStage(value: string | null): value is CandidateStage {
+  return value !== null && CANDIDATE_STAGES.some((stage) => stage === value);
+}
+
 export const STATUS_LABELS: Record<CandidateStatus, string> = {
   received: "Recibida",
   in_progress: "En proceso",

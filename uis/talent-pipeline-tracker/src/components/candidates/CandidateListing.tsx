@@ -8,17 +8,8 @@ import { CandidateList } from "@/components/candidates/CandidateList";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingState } from "@/components/ui/LoadingState";
-import { CANDIDATE_STAGES, CANDIDATE_STATUSES } from "@/lib/constants";
+import { isCandidateStage, isCandidateStatus } from "@/lib/constants";
 import { useCandidates } from "@/hooks/useCandidates";
-import type { CandidateStage, CandidateStatus } from "@/types/candidate";
-
-function isCandidateStatus(value: string | null): value is CandidateStatus {
-  return value !== null && CANDIDATE_STATUSES.some((status) => status === value);
-}
-
-function isCandidateStage(value: string | null): value is CandidateStage {
-  return value !== null && CANDIDATE_STAGES.some((stage) => stage === value);
-}
 
 export function CandidateListing() {
   const router = useRouter();

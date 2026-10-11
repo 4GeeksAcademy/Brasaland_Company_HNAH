@@ -3,7 +3,13 @@
 import { useRef, useState } from "react";
 import { Alert } from "@/components/ui/Alert";
 import { ErrorState } from "@/components/ui/ErrorState";
-import { STAGE_LABELS, STATUS_LABELS } from "@/lib/constants";
+import { notifyCandidateListChanged } from "@/lib/candidate-list-events";
+import {
+  isCandidateStage,
+  isCandidateStatus,
+  STAGE_LABELS,
+  STATUS_LABELS,
+} from "@/lib/constants";
 import { patchCandidate } from "@/services/candidates.service";
 import type {
   Candidate,
@@ -92,6 +98,7 @@ export function StatusStageControls({
               : current.updated_at,
         };
       });
+      notifyCandidateListChanged();
 
       const successMessage =
         change.field === "status"
@@ -133,12 +140,12 @@ export function StatusStageControls({
             className={selectClassName}
             value={candidate.status}
             disabled={pending.status}
-            onChange={(event) =>
-              void saveChange({
-                field: "status",
-                value: event.currentTarget.value as CandidateStatus,
-              })
-            }
+            onChange={(event) => {
+              const value = event.currentTarget.value;
+              if (isCandidateStatus(value)) {
+                void saveChange({ field: "status", value });
+              }
+            }}
           >
             {Object.entries(STATUS_LABELS).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
@@ -157,12 +164,12 @@ export function StatusStageControls({
             className={selectClassName}
             value={candidate.stage}
             disabled={pending.stage}
-            onChange={(event) =>
-              void saveChange({
-                field: "stage",
-                value: event.currentTarget.value as CandidateStage,
-              })
-            }
+            onChange={(event) => {
+              const value = event.currentTarget.value;
+              if (isCandidateStage(value)) {
+                void saveChange({ field: "stage", value });
+              }
+            }}
           >
             {Object.entries(STAGE_LABELS).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>

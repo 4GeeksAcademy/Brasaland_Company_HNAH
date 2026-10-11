@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Alert } from "@/components/ui/Alert";
 import { ApiError } from "@/lib/api-client";
+import { notifyCandidateListChanged } from "@/lib/candidate-list-events";
 import { validateCandidateForm } from "@/lib/validation";
 import type {
   CandidateFormErrors,
@@ -15,7 +16,7 @@ import type {
 import { createCandidate, replaceCandidate } from "@/services/candidates.service";
 import type { Candidate, CandidateInput } from "@/types/candidate";
 
-type FormField = Exclude<CandidateFormField, "experience_years"> | "experience_years";
+type FormField = CandidateFormField;
 
 interface CandidateFormProps {
   mode: "create" | "edit";
@@ -31,6 +32,10 @@ const fieldOrder: CandidateFormField[] = [
   "linkedin_url",
   "cv_url",
 ];
+
+function isCandidateFormField(value: string): value is CandidateFormField {
+  return fieldOrder.some((field) => field === value);
+}
 
 const inputClassName =
   "min-h-11 w-full rounded-sm border border-line bg-surface px-3 py-2 text-sm text-foreground shadow-sm focus:border-brasa-600 focus:outline-none focus:ring-2 focus:ring-brasa-600/20";
@@ -62,28 +67,26 @@ function toCandidateInput(values: CandidateFormValues): CandidateInput {
 }
 
 function serverFieldErrors(error: ApiError): CandidateFormErrors {
-  const fields = new Set<CandidateFormField>(fieldOrder);
   const result: CandidateFormErrors = {};
 
   for (const issue of error.details) {
     const field = issue.loc.at(-1);
-    if (typeof field !== "string" || !fields.has(field as CandidateFormField)) {
+    if (typeof field !== "string" || !isCandidateFormField(field)) {
       continue;
     }
 
-    const formField = field as CandidateFormField;
-    if (result[formField]) continue;
+    if (result[field]) continue;
 
     if (issue.type === "missing") {
-      result[formField] = "Este campo es obligatorio.";
-    } else if (formField === "email") {
+      result[field] = "Este campo es obligatorio.";
+    } else if (field === "email") {
       result.email = "El servidor rechazó el formato del correo electrónico.";
-    } else if (formField === "experience_years") {
+    } else if (field === "experience_years") {
       result.experience_years = "El servidor rechazó los años de experiencia.";
-    } else if (formField === "linkedin_url" || formField === "cv_url") {
-      result[formField] = "El servidor rechazó esta URL.";
+    } else if (field === "linkedin_url" || field === "cv_url") {
+      result[field] = "El servidor rechazó esta URL.";
     } else {
-      result[formField] = "El servidor rechazó este valor.";
+      result[field] = "El servidor rechazó este valor.";
     }
   }
 
@@ -143,6 +146,7 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
           ? await replaceCandidate(candidate.id, payload)
           : null;
       if (!result) return;
+      notifyCandidateListChanged();
       const notice = mode === "create" ? "created=1" : "updated=1";
       router.push(`/candidates/${encodeURIComponent(result.id)}?${notice}`);
     } catch (cause) {
@@ -171,7 +175,10 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
     onBlur: () => validateField(field),
     "aria-required": fieldOrder.slice(0, 5).includes(field),
     "aria-invalid": Boolean(errors[field]),
-    "aria-describedby": errors[field] ? `${field}-error` : undefined,
+    "aria-describedby": [
+      ...(field === "position" ? ["position-examples"] : []),
+      ...(errors[field] ? [`${field}-error`] : []),
+    ].join(" ") || undefined,
     ref: (element: HTMLInputElement | null) => {
       inputRefs.current[field] = element;
     },
@@ -191,15 +198,15 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
           <label htmlFor="full_name" className="block text-sm font-semibold text-foreground">
             Nombre completo <span aria-hidden="true">*</span>
           </label>
-          <input className={`${inputClassName} mt-1`} type="text" autoComplete="name" {...fieldProps("full_name")} />
+          <input className={`${inputClassName} mt-1`} type="text" autoComplete="name" placeholder="Ej. Laura Restrepo" {...fieldProps("full_name")} />
           {fieldError("full_name")}
         </div>
 
         <div>
           <label htmlFor="email" className="block text-sm font-semibold text-foreground">
-            Email <span aria-hidden="true">*</span>
+            Correo electrónico <span aria-hidden="true">*</span>
           </label>
-          <input className={`${inputClassName} mt-1`} type="email" autoComplete="email" {...fieldProps("email")} />
+          <input className={`${inputClassName} mt-1`} type="email" autoComplete="email" placeholder="Ej. laura@ejemplo.com" {...fieldProps("email")} />
           {fieldError("email")}
         </div>
 
@@ -207,7 +214,7 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
           <label htmlFor="phone" className="block text-sm font-semibold text-foreground">
             Teléfono <span aria-hidden="true">*</span>
           </label>
-          <input className={`${inputClassName} mt-1`} type="tel" autoComplete="tel" {...fieldProps("phone")} />
+          <input className={`${inputClassName} mt-1`} type="tel" autoComplete="tel" placeholder="+57 300 123 4567 o +1 305 555 0100" {...fieldProps("phone")} />
           {fieldError("phone")}
         </div>
 
@@ -215,8 +222,11 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
           <label htmlFor="position" className="block text-sm font-semibold text-foreground">
             Puesto <span aria-hidden="true">*</span>
           </label>
-          <input className={`${inputClassName} mt-1`} type="text" {...fieldProps("position")} />
+          <input className={`${inputClassName} mt-1`} type="text" placeholder="Ej. Cocinero/a de parrilla" {...fieldProps("position")} />
           {fieldError("position")}
+          <p id="position-examples" className="mt-1 text-xs text-muted">
+            También puedes usar Cajero/a, Mesero/a o Supervisor/a de local.
+          </p>
         </div>
 
         <div>
@@ -228,6 +238,7 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
             type="number"
             min="0"
             step="0.5"
+            placeholder="Ej. 2.5"
             {...fieldProps("experience_years")}
           />
           {fieldError("experience_years")}
@@ -237,7 +248,7 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
           <label htmlFor="linkedin_url" className="block text-sm font-semibold text-foreground">
             LinkedIn
           </label>
-          <input className={`${inputClassName} mt-1`} type="url" {...fieldProps("linkedin_url")} />
+          <input className={`${inputClassName} mt-1`} type="url" placeholder="https://linkedin.com/in/tu-perfil" {...fieldProps("linkedin_url")} />
           {fieldError("linkedin_url")}
         </div>
 
@@ -245,7 +256,7 @@ export function CandidateForm({ mode, candidate }: CandidateFormProps) {
           <label htmlFor="cv_url" className="block text-sm font-semibold text-foreground">
             Enlace al CV
           </label>
-          <input className={`${inputClassName} mt-1`} type="url" {...fieldProps("cv_url")} />
+          <input className={`${inputClassName} mt-1`} type="url" placeholder="https://ejemplo.com/hoja-de-vida.pdf" {...fieldProps("cv_url")} />
           {fieldError("cv_url")}
         </div>
       </div>

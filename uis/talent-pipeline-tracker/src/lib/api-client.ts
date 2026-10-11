@@ -17,22 +17,30 @@ const VALIDATION_FIELD_LABELS: Record<string, string> = {
   content: "Nota",
 };
 
-function isValidationIssue(value: unknown): value is ApiValidationIssue {
-  if (typeof value !== "object" || value === null) return false;
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
 
-  const issue = value as Record<string, unknown>;
+function isValidationIssue(value: unknown): value is ApiValidationIssue {
+  if (!isRecord(value)) return false;
+
   return (
-    Array.isArray(issue.loc) &&
-    typeof issue.msg === "string" &&
-    typeof issue.type === "string"
+    Array.isArray(value.loc) &&
+    typeof value.msg === "string" &&
+    typeof value.type === "string"
+  );
+}
+
+function isApiErrorBody(value: unknown): value is ApiErrorBody {
+  return (
+    isRecord(value) &&
+    Array.isArray(value.detail) &&
+    value.detail.every(isValidationIssue)
   );
 }
 
 function readValidationDetails(payload: unknown): ApiValidationIssue[] {
-  if (typeof payload !== "object" || payload === null) return [];
-
-  const detail = (payload as Partial<ApiErrorBody>).detail;
-  return Array.isArray(detail) ? detail.filter(isValidationIssue) : [];
+  return isApiErrorBody(payload) ? payload.detail : [];
 }
 
 function validationMessage(details: ApiValidationIssue[]): string {
@@ -108,7 +116,10 @@ export async function request<T>(
     throw new ApiError(0, "No se pudo conectar con el servidor");
   }
 
-  if (response.status === 204) return undefined as T;
+  if (response.status === 204) {
+    // DELETE endpoints have no JSON value; services model them as Promise<void>.
+    return undefined as T;
+  }
 
   let payload: unknown;
   try {
@@ -122,5 +133,6 @@ export async function request<T>(
     throw new ApiError(response.status, errorMessage(response.status, details), details);
   }
 
+  // The generic service contract types this JSON boundary; it is not a runtime schema validator.
   return payload as T;
 }

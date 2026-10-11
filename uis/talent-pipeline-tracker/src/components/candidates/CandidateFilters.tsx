@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { STAGE_LABELS, STATUS_LABELS } from "@/lib/constants";
+import {
+  isCandidateStage,
+  isCandidateStatus,
+  STAGE_LABELS,
+  STATUS_LABELS,
+} from "@/lib/constants";
 import type { CandidateStage, CandidateStatus } from "@/types/candidate";
 
 interface CandidateFiltersProps {
@@ -62,9 +67,10 @@ export function CandidateFilters({
         <select
           className={controlClassName}
           value={status ?? ""}
-          onChange={(event) =>
-            onStatusChange((event.currentTarget.value || undefined) as CandidateStatus | undefined)
-          }
+          onChange={(event) => {
+            const value = event.currentTarget.value;
+            onStatusChange(isCandidateStatus(value) ? value : undefined);
+          }}
         >
           <option value="">Todos los estados</option>
           {Object.entries(STATUS_LABELS).map(([value, label]) => (
@@ -78,9 +84,10 @@ export function CandidateFilters({
         <select
           className={controlClassName}
           value={stage ?? ""}
-          onChange={(event) =>
-            onStageChange((event.currentTarget.value || undefined) as CandidateStage | undefined)
-          }
+          onChange={(event) => {
+            const value = event.currentTarget.value;
+            onStageChange(isCandidateStage(value) ? value : undefined);
+          }}
         >
           <option value="">Todas las etapas</option>
           {Object.entries(STAGE_LABELS).map(([value, label]) => (
@@ -94,7 +101,7 @@ export function CandidateFilters({
         <input
           className={controlClassName}
           type="search"
-          placeholder="Buscar por nombre o email"
+          placeholder="Buscar por nombre o correo"
           value={searchDraft}
           onChange={(event) => setSearchDraft(event.currentTarget.value)}
         />

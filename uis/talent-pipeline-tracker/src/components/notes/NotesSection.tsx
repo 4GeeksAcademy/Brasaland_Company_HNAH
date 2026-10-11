@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { NoteForm } from "@/components/notes/NoteForm";
 import { NoteItem } from "@/components/notes/NoteItem";
+import { Alert } from "@/components/ui/Alert";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { LoadingState } from "@/components/ui/LoadingState";
@@ -24,8 +25,10 @@ export function NotesSection({ candidateId, onCountChange }: NotesSectionProps) 
     useNotes(candidateId);
   const [deletingIds, setDeletingIds] = useState<Set<string>>(() => new Set());
   const [deleteErrors, setDeleteErrors] = useState<Record<string, string>>({});
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   const submitNote = async (content: string) => {
+    setDeleteSuccess(false);
     await addNote({ content });
     onCountChange(1);
   };
@@ -35,6 +38,7 @@ export function NotesSection({ candidateId, onCountChange }: NotesSectionProps) 
       return;
     }
 
+    setDeleteSuccess(false);
     setDeleteErrors((current) => {
       const next = { ...current };
       delete next[noteId];
@@ -45,6 +49,7 @@ export function NotesSection({ candidateId, onCountChange }: NotesSectionProps) 
     try {
       await removeNote(noteId);
       onCountChange(-1);
+      setDeleteSuccess(true);
     } catch (cause) {
       setDeleteErrors((current) => ({
         ...current,
@@ -69,6 +74,12 @@ export function NotesSection({ candidateId, onCountChange }: NotesSectionProps) 
           Notas internas
         </h2>
       </header>
+
+      {deleteSuccess ? (
+        <div className="mt-4">
+          <Alert variant="success" message="Nota eliminada correctamente." />
+        </div>
+      ) : null}
 
       <NoteForm onSubmit={submitNote} />
 

@@ -33,7 +33,7 @@ export function CandidateEditLoader({ id }: CandidateEditLoaderProps) {
         </h1>
         <Link
           href="/"
-          className="mt-6 inline-flex min-h-10 items-center rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-foreground hover:bg-brasa-50"
+          className="mt-6 inline-flex min-h-10 items-center rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-foreground hover:bg-brasa-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-600"
         >
           Volver al listado
         </Link>
@@ -47,7 +47,7 @@ export function CandidateEditLoader({ id }: CandidateEditLoaderProps) {
         <ErrorState message={error.message} onRetry={refetch} />
         <Link
           href={`/candidates/${encodeURIComponent(id)}`}
-          className="mt-6 inline-flex min-h-10 items-center rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-foreground hover:bg-brasa-50"
+          className="mt-6 inline-flex min-h-10 items-center rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-foreground hover:bg-brasa-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-600"
         >
           Cancelar
         </Link>
